@@ -57,6 +57,49 @@
     .summary { display: flex; gap: 23px; margin-bottom: 16px; }
     .summary div { background: #e0e7ff; padding: 10px 14px; border-radius: 12px; font-weight: 600; color: var(--primary); }
     @media (max-width: 700px) { header { font-size: 1.05rem; padding: 14px 8px; } .header-logo { width: 36px; height: 36px;} .container { padding: 12px 5px;} .card { padding: 11px; } h2, h3 { font-size: 1rem; } }
+  .table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+@media (max-width: 600px) {
+  body { font-size: 15px; }
+  .container {
+    width: 100%;
+    padding: 6px 2px;
+    margin: 10px auto;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .brand span {
+    font-size: 1em;
+  }
+  .header-logo {
+    width: 32px;
+    height: 32px;
+  }
+  .card {
+    padding: 8px;
+  }
+  .btn, .btn-small {
+    width: 100%;
+    margin: 8px 0 0 0;
+    min-height: 40px;
+  }
+  table, th, td {
+    font-size: 12px;
+    padding: 3px 2px;
+  }
+  h2, h3 {
+    font-size: 1.05rem;
+  }
+  .summary {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
   </style>
 </head>
 <body>
@@ -135,7 +178,7 @@
         <option value="paid">Only Paid</option>
         <option value="all">All</option>
       </select>
-
+<div class="table-responsive">
       <table id="pendingTable">
         <thead>
           <tr><th>Flat</th><th>Sqft</th><th>Description</th><th>Amount</th><th>Status / Action</th></tr>
@@ -150,6 +193,7 @@
         </thead>
         <tbody></tbody>
       </table>
+       </div>
     </div>
   </div>
 </div>
