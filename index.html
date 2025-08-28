@@ -19,173 +19,52 @@
       --header-shadow: 0 4px 14px rgba(37,99,235,0.18);
       --font: 'Poppins', Arial, sans-serif;
     }
-    body {
-      font-family: var(--font);
-      background: linear-gradient(120deg, #e0e7ff 0%, #f3f6fa 100%);
-      margin: 0;
-    }
+    body { font-family: var(--font); background: linear-gradient(120deg, #e0e7ff 0%, #f3f6fa 100%); margin: 0; }
     header {
       background: linear-gradient(90deg, var(--primary-dark) 60%, var(--primary) 100%);
-      color: #fff;
-      padding: 22px 24px;
-      font-size: 1.7rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom-left-radius: var(--header-radius);
-      border-bottom-right-radius: var(--header-radius);
-      box-shadow: var(--header-shadow);
-      margin-bottom: 20px;
+      color: #fff; padding: 22px 24px; font-size: 1.7rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom-left-radius: var(--header-radius); border-bottom-right-radius: var(--header-radius);
+      box-shadow: var(--header-shadow); margin-bottom: 20px;
     }
-    .brand {
-      display: flex;
-      gap: 17px;
-      align-items: center;
-    }
-    .header-logo {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.13);
-      border: 2px solid #fff;
-      background: #fff;
-      flex-shrink: 0;
-    }
-    .brand span {
-      font-weight: 600;
-      font-size: 1.2em;
-      letter-spacing: 1px;
-      text-shadow: 0 2px 6px rgba(30,58,138,0.18);
-    }
-    .btn {
-      background: linear-gradient(135deg, var(--primary) 60%, var(--accent) 100%);
-      color: #fff;
-      border: 0;
-      padding: 8px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-      font-family: var(--font);
-      transition: background 0.3s;
-      box-shadow: 0 2px 8px rgba(37,99,235,0.09);
-      margin-left: 6px;
-    }
+    .brand { display: flex; gap: 17px; align-items: center; }
+    .header-logo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 12px rgba(0,0,0,0.13); border: 2px solid #fff; background: #fff; flex-shrink: 0; }
+    .brand span { font-weight: 600; font-size: 1.2em; letter-spacing: 1px; text-shadow: 0 2px 6px rgba(30,58,138,0.18); }
+    .btn { background: linear-gradient(135deg, var(--primary) 60%, var(--accent) 100%); color: #fff; border: 0; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 15px; font-family: var(--font); transition: background 0.3s; box-shadow: 0 2px 8px rgba(37,99,235,0.09); margin-left: 6px; }
     .btn:hover { filter: brightness(0.93); }
     .btn-danger { background: linear-gradient(135deg, var(--danger) 60%, #b91c1c 100%);}
     .btn-small { padding: 7px 10px; font-size: 13px; }
-    .container {
-      width: 97%;
-      max-width: 1100px;
-      margin: 30px auto;
-      background: rgba(255,255,255,0.93);
-      border-radius: var(--card-radius);
-      box-shadow: var(--shadow);
-      padding: 30px 22px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 22px;
-    }
-    @media(min-width:900px) {
-      .grid { grid-template-columns:1fr 1fr; }
-    }
-    .card {
-      background: #fff;
-      border-radius: var(--card-radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-    h2, h3 {
-      color: var(--primary);
-      margin: 0 0 15px;
-      font-family: var(--font);
-      font-weight: 600;
-    }
+    .container { width: 97%; max-width: 1100px; margin: 30px auto; background: rgba(255,255,255,0.93); border-radius: var(--card-radius); box-shadow: var(--shadow); padding: 30px 22px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
+    @media(min-width:900px) { .grid { grid-template-columns:1fr 1fr; } }
+    .card { background: #fff; border-radius: var(--card-radius); padding: 18px; box-shadow: var(--shadow); }
+    h2, h3 { color: var(--primary); margin: 0 0 15px; font-family: var(--font); font-weight: 600; }
     select, input[type="text"], input[type="password"], input[type="number"] {
-      width: 100%;
-      padding: 12px 14px;
-      margin-top: 10px;
-      margin-bottom: 16px;
-      border: 1.5px solid #b6c0e0;
-      border-radius: 10px;
-      outline: none;
-      background: #f3f6fa;
-      font-size: 16px;
-      transition: border-color 0.2s;
-      box-sizing: border-box;
-      font-family: var(--font);
+      width: 100%; padding: 12px 14px; margin-top: 10px; margin-bottom: 16px;
+      border: 1.5px solid #b6c0e0; border-radius: 10px; outline: none; background: #f3f6fa;
+      font-size: 16px; transition: border-color 0.2s; box-sizing: border-box; font-family: var(--font);
     }
-    select:focus, input:focus {
-      border-color: #2563eb;
-    }
-    label {
-      font-weight: 500;
-      margin-top: 14px;
-      margin-bottom: 0px;
-      display: block;
-      color: #2563eb;
-      font-size: 15px;
-    }
-    .due-item {
-      background: linear-gradient(90deg, #e0e7ff 60%, #f3f6fa 100%);
-      padding: 12px;
-      margin: 8px 0;
-      border-left: 7px solid var(--accent-2);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(37,99,235,0.05);
-    }
+    select:focus, input:focus { border-color: #2563eb; }
+    label { font-weight: 500; margin-top: 14px; margin-bottom: 0px; display: block; color: #2563eb; font-size: 15px; }
+    .due-item { background: linear-gradient(90deg, #e0e7ff 60%, #f3f6fa 100%); padding: 12px; margin: 8px 0; border-left: 7px solid var(--accent-2); display: flex; justify-content: space-between; align-items: center; gap: 12px; border-radius: 12px; box-shadow: 0 2px 6px rgba(37,99,235,0.05); }
     .due-title { font-weight: 600; font-size: 1.08em;}
     .actions { display: flex; gap: 8px; flex-wrap: wrap; }
     .muted { color: #6b7280; font-size: 14px;}
     .success { color: #22c55e; font-weight: 700; display: flex; gap: 7px; align-items: center; padding: 10px 0;}
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 13px;
-    }
-    th, td {
-      border: 1px solid #e7eaee;
-      padding: 7px 10px;
-      text-align: center;
-      font-size: 14px;
-      font-family: var(--font);
-    }
-    th {
-      background: #e0e7ff;
-      color: var(--primary);
-      font-weight: 700;
-    }
-    .summary {
-      display: flex;
-      gap: 23px;
-      margin-bottom: 16px;
-    }
-    .summary div {
-      background: #e0e7ff;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-weight: 600;
-      color: var(--primary);
-    }
-    @media (max-width: 700px) {
-      header { font-size: 1.05rem; padding: 14px 8px; }
-      .header-logo { width: 36px; height: 36px;}
-      .container { padding: 12px 5px;}
-      .card { padding: 11px; }
-      h2, h3 { font-size: 1rem; }
-    }
+    table { width: 100%; border-collapse: collapse; margin-top: 13px; }
+    th, td { border: 1px solid #e7eaee; padding: 7px 10px; text-align: center; font-size: 14px; font-family: var(--font); }
+    th { background: #e0e7ff; color: var(--primary); font-weight: 700; }
+    .summary { display: flex; gap: 23px; margin-bottom: 16px; }
+    .summary div { background: #e0e7ff; padding: 10px 14px; border-radius: 12px; font-weight: 600; color: var(--primary); }
+    @media (max-width: 700px) { header { font-size: 1.05rem; padding: 14px 8px; } .header-logo { width: 36px; height: 36px;} .container { padding: 12px 5px;} .card { padding: 11px; } h2, h3 { font-size: 1rem; } }
   </style>
 </head>
 <body>
 <header>
   <div class="brand">
-    <img src="https://i.ibb.co/ZRNQxN5q/file-00000000777461fa82518c850f7680e9.png" alt="Logo" class="header-logo" />
+     <a href="https://eleganceenclave.tiiny.site/" style="display: inline-block;">
+       <img src="https://i.ibb.co/ZRNQxN5q/file-00000000777461fa82518c850f7680e9.png" alt="Logo" class="header-logo" />
+       </a>
     <span>🏢 Apartment Maintenance</span>
   </div>
   <div>
@@ -213,6 +92,10 @@
     <div class="card" id="residentCard" style="display:none">
       <h2>Resident — Dues</h2>
       <div id="dueCard"></div>
+
+      <h3>Change Password</h3>
+      <input type="password" id="newUserPass" placeholder="Enter New Password"/>
+      <button class="btn" onclick="changeUserPassword()">Update Password</button>
     </div>
 
     <!-- Admin Login -->
@@ -225,10 +108,14 @@
       <button class="btn" onclick="adminLogin()">Login</button>
     </div>
 
-    <!-- Admin Panel (now inside grid) -->
+    <!-- Admin Panel -->
     <div class="card" id="adminPanel" style="display:none">
       <h2>Admin Panel</h2>
       <div class="summary" id="summaryBar"><div>Total Pending: ₹0</div><div>Total Collected: ₹0</div></div>
+
+      <h3>Change Admin Password</h3>
+      <input type="password" id="newAdminPass" placeholder="Enter New Admin Password"/>
+      <button class="btn" onclick="changeAdminPassword()">Update Admin Password</button>
 
       <h3>Update Flat Size</h3>
       <select id="sizeFlat"><option value="">-- Select Flat --</option></select>
@@ -242,15 +129,16 @@
       <button class="btn" onclick="addCharge()">Add Charge</button>
 
       <h3>Pending Dues</h3>
+      <label>Show: </label>
+      <select id="filterDues" onchange="refreshAdminTables()">
+        <option value="unpaid">Only Unpaid</option>
+        <option value="paid">Only Paid</option>
+        <option value="all">All</option>
+      </select>
+
       <table id="pendingTable">
         <thead>
-          <tr>
-            <th>Flat</th>
-            <th>Sqft</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Action</th>
-          </tr>
+          <tr><th>Flat</th><th>Sqft</th><th>Description</th><th>Amount</th><th>Status / Action</th></tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -258,13 +146,7 @@
       <h3>Payment History</h3>
       <table id="historyTable">
         <thead>
-          <tr>
-            <th>Flat</th>
-            <th>Sqft</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Date</th>
-          </tr>
+          <tr><th>Flat</th><th>Sqft</th><th>Description</th><th>Amount</th><th>Date</th></tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -275,138 +157,136 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDykGxIq2GUDxFkv28NLmdRmiQzlEjvFuw",
-  authDomain: "rento-56bca.firebaseapp.com",
-  projectId: "rento-56bca",
-  storageBucket: "rento-56bca.appspot.com",
-  messagingSenderId: "641174222477",
-  appId: "1:641174222477:web:0c6c5999787c2ca05d14c4",
-  measurementId: "G-T3CSB1Z271"
-};
+/* Firebase init */
+const firebaseConfig = { apiKey: "AIzaSyDykGxIq2GUDxFkv28NLmdRmiQzlEjvFuw", authDomain: "rento-56bca.firebaseapp.com", projectId: "rento-56bca", storageBucket: "rento-56bca.appspot.com", messagingSenderId: "641174222477", appId: "1:641174222477:web:0c6c5999787c2ca05d14c4", measurementId: "G-T3CSB1Z271" };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 let loggedInFlat = null;
 
-function allFlats(){
-  const list=[];
-  for(let f=0; f<=4; f++){
-    for(let n=1; n<=7; n++){
-      list.push(`${f}${String(n).padStart(2,'0')}`);
-    }
-  }
-  for(let n=1; n<=3; n++){ list.push(`5${String(n).padStart(2,'0')}`); }
-  return list;
-}
+/* Helpers */
+function allFlats(){ const list=[]; for(let f=0; f<=4; f++){ for(let n=1; n<=7; n++){ list.push(`${f}${String(n).padStart(2,'0')}`); } } for(let n=1; n<=3; n++){ list.push(`5${String(n).padStart(2,'0')}`); } return list; }
 function currentMonthYear(){ return new Date().toLocaleString('default',{month:'long', year:'numeric'}); }
+
+/* Auto-generate monthly dues */
 async function generateThisMonthMaintenance(){
-  const tag = currentMonthYear();
-  const flats = allFlats();
+  const tag = currentMonthYear(); const flats = allFlats();
   for(const flat of flats){
     const duesRef = db.collection('flats').doc(flat).collection('dues');
     const label = `Maintenance for ${tag}`;
     try{
       const snapshot = await duesRef.where('desc','==',label).get();
-      if(snapshot.empty){
-        const flatDoc = await db.collection('flats').doc(flat).get();
+      if(snapshot.empty){ const flatDoc = await db.collection('flats').doc(flat).get();
         const sqft = flatDoc.exists && flatDoc.data().size ? flatDoc.data().size : 1000;
         const amt = sqft * 2;
-        await duesRef.add({ desc: label, amount: amt, created: Date.now() });
+        await duesRef.add({ desc: label, amount: amt, created: Date.now(), status: "unpaid" });
       }
-    }catch(err){
-      console.error('Err generating maintenance for', flat, err);
-    }
+    }catch(err){ console.error('Err generating maintenance for', flat, err); }
   }
 }
-function showUserLogin() {
-  const userCard = document.getElementById('userLoginCard');
-  const adminCard = document.getElementById('loginCard');
-  if (userCard.style.display === 'block') {
-    userCard.style.display = 'none';
-  } else {
-    userCard.style.display = 'block';
-    adminCard.style.display = 'none';
-  }
-}
-function showAdminLogin() {
-  const adminCard = document.getElementById('loginCard');
-  const userCard = document.getElementById('userLoginCard');
-  if (adminCard.style.display === 'block') {
-    adminCard.style.display = 'none';
-  } else {
-    adminCard.style.display = 'block';
-    userCard.style.display = 'none';
-  }
-}
-function userLogin(){
-  const flat = document.getElementById('userFlatSelect').value;
-  const pass = document.getElementById('userPass').value;
-  if(!flat || !pass){ alert('Flat and Password required!'); return; }
-  if(pass === `flat${flat}`){
-    loggedInFlat = flat;
-    document.getElementById('userLoginCard').style.display='none';
-    document.getElementById('residentCard').style.display='block';
-    document.getElementById('userLoginBtn').style.display='none';
-    document.getElementById('userLogoutBtn').style.display='inline-block';
-    document.getElementById('adminLoginBtn').style.display='none';
-    renderResidentDues();
-  } else alert('Invalid Password');
-}
-function userLogout(){
-  loggedInFlat = null;
-  document.getElementById('residentCard').style.display='none';
-  document.getElementById('userLoginBtn').style.display='inline-block';
-  document.getElementById('userLogoutBtn').style.display='none';
-  document.getElementById('adminLoginBtn').style.display='inline-block';
-}
-async function renderResidentDues(){
-  const wrap = document.getElementById('dueCard'); wrap.innerHTML = '';
-  if(!loggedInFlat){ wrap.innerHTML = '<p class="muted">Login required.</p>'; return; }
+
+/* Show login forms */
+function showUserLogin(){ document.getElementById('userLoginCard').style.display='block'; document.getElementById('loginCard').style.display='none'; }
+function showAdminLogin(){ document.getElementById('loginCard').style.display='block'; document.getElementById('userLoginCard').style.display='none'; }
+
+/* User login + password mgmt */
+async function userLogin(){
+  const flat=document.getElementById('userFlatSelect').value;
+  const pass=document.getElementById('userPass').value;
+  if(!flat||!pass){ alert('Flat and Password required!'); return; }
   try{
-    const duesSnap = await db.collection('flats').doc(loggedInFlat).collection('dues').orderBy('created','asc').get();
-    if(duesSnap.empty){ wrap.innerHTML = '<div class="success">✅ No Amount Pending</div>'; return; }
-    duesSnap.forEach(doc => {
-      const d = doc.data();
-      const row = document.createElement('div'); row.className = 'due-item';
-      const descEsc = d.desc ? d.desc.replace(/'/g,"\\'") : '';
-      row.innerHTML = `<div><div class="due-title">${d.desc}</div><div class="muted">₹${d.amount}</div></div>
-        <div class="actions">
+    const doc=await db.collection("users").doc(flat).get();
+    const savedPass=doc.exists?doc.data().password:`flat${flat}`;
+    if(pass===savedPass){
+      loggedInFlat=flat;
+      document.getElementById('userLoginCard').style.display='none';
+      document.getElementById('residentCard').style.display='block';
+      document.getElementById('userLoginBtn').style.display='none';
+      document.getElementById('userLogoutBtn').style.display='inline-block';
+      document.getElementById('adminLoginBtn').style.display='none';
+      renderResidentDues();
+    } else alert('Invalid Password');
+  }catch(err){ console.error(err); alert('Error checking password'); }
+}
+function userLogout(){ loggedInFlat=null; document.getElementById('residentCard').style.display='none'; document.getElementById('userLoginBtn').style.display='inline-block'; document.getElementById('userLogoutBtn').style.display='none'; document.getElementById('adminLoginBtn').style.display='inline-block'; }
+async function changeUserPassword(){
+  const newPass=document.getElementById("newUserPass").value;
+  if(!loggedInFlat||!newPass){ alert("Enter new password!"); return; }
+  try{ await db.collection("users").doc(loggedInFlat).set({ password:newPass }); alert("Password updated!"); document.getElementById("newUserPass").value=""; }
+  catch(err){ console.error(err); alert("Error updating password"); }
+}
+
+/* Render resident dues */
+async function renderResidentDues(){
+  const wrap=document.getElementById('dueCard'); wrap.innerHTML='';
+  if(!loggedInFlat){ wrap.innerHTML='<p class="muted">Login required.</p>'; return; }
+  try{
+    const duesSnap=await db.collection('flats').doc(loggedInFlat).collection('dues').orderBy('created','asc').get();
+    if(duesSnap.empty){ wrap.innerHTML='<div class="success">✅ No Amount Pending</div>'; return; }
+    duesSnap.forEach(doc=>{
+      const d=doc.data(); const row=document.createElement('div'); row.className='due-item'; const descEsc=d.desc?d.desc.replace(/'/g,"\\'"):'';
+      let actionHtml="";
+      if(d.status==="paid"){ actionHtml=`<div class="success">✅ Paid on ${d.paidDate||""}</div>`; }
+      else{
+        actionHtml=`<div class="actions">
           <a class="btn btn-small" href="upi://pay?pa=test@ybl&am=${encodeURIComponent(d.amount)}&cu=INR&tn=${encodeURIComponent(d.desc)}">Pay Now</a>
           <button class="btn btn-small" onclick="markPaid('${loggedInFlat}','${doc.id}',${d.amount},'${descEsc}')">Mark as Paid</button>
         </div>`;
+      }
+      row.innerHTML=`<div><div class="due-title">${d.desc}</div><div class="muted">₹${d.amount}</div></div>${actionHtml}`;
       wrap.appendChild(row);
     });
-  }catch(err){
-    console.error('renderResidentDues error',err);
-    wrap.innerHTML = '<p class="muted">Error loading dues.</p>';
-  }
+  }catch(err){ console.error('renderResidentDues error',err); wrap.innerHTML='<p class="muted">Error loading dues.</p>'; }
 }
-async function markPaid(flat, id, amount, desc){
+async function markPaid(flat,id,amount,desc){
   try{
-    await db.collection('flats').doc(flat).collection('dues').doc(id).delete();
+    await db.collection('flats').doc(flat).collection('dues').doc(id).update({status:"paid",paidDate:new Date().toLocaleString() });
+    // add to payments collection
     await db.collection('payments').add({ flat, desc, amount, date: new Date().toLocaleString() });
-    renderResidentDues(); refreshAdminTables();
+    renderResidentDues();
+    refreshAdminTables();
   }catch(err){
     console.error('markPaid error',err);
-    alert('Error marking paid. See console.');
+    alert('Error marking paid.');
   }
 }
-function adminLogin(){
-  if(document.getElementById('adminUser').value === 'admin' && document.getElementById('adminPass').value === 'admin123'){
-    document.getElementById('loginCard').style.display='none';
-    document.getElementById('adminPanel').style.display='block';
-    document.getElementById('adminLoginBtn').style.display='none';
-    document.getElementById('adminLogoutBtn').style.display='inline-block';
-    document.getElementById('userLoginBtn').style.display='none';
-    refreshAdminTables();
-  } else alert('Invalid Admin Credentials');
+
+/* Admin login + password mgmt */
+async function adminLogin(){
+  const user = document.getElementById('adminUser').value;
+  const pass = document.getElementById('adminPass').value;
+  if(user !== "admin"){ alert("Invalid Username"); return; }
+  try{
+    const doc = await db.collection("users").doc("admin").get();
+    const savedPass = doc.exists ? doc.data().password : "admin123";
+    if(pass === savedPass){
+      document.getElementById('loginCard').style.display='none';
+      document.getElementById('adminPanel').style.display='block';
+      document.getElementById('adminLoginBtn').style.display='none';
+      document.getElementById('adminLogoutBtn').style.display='inline-block';
+      document.getElementById('userLoginBtn').style.display='none';
+      await refreshAdminTables();
+    } else alert('Invalid Admin Credentials');
+  }catch(err){ console.error(err); alert('Error checking admin password'); }
 }
+
 function adminLogout(){
   document.getElementById('adminPanel').style.display='none';
   document.getElementById('adminLoginBtn').style.display='inline-block';
   document.getElementById('adminLogoutBtn').style.display='none';
   document.getElementById('userLoginBtn').style.display='inline-block';
 }
+
+async function changeAdminPassword(){
+  const newPass = document.getElementById("newAdminPass").value;
+  if(!newPass){ alert("Enter new admin password!"); return; }
+  try{
+    await db.collection("users").doc("admin").set({ password: newPass });
+    alert("Admin password updated!");
+    document.getElementById("newAdminPass").value="";
+  }catch(err){ console.error(err); alert("Error updating admin password"); }
+}
+
+/* Admin actions */
 async function updateFlatSize(){
   const flat = document.getElementById('sizeFlat').value;
   const size = parseInt(document.getElementById('flatSize').value);
@@ -418,54 +298,74 @@ async function updateFlatSize(){
     }catch(err){ console.error(err); alert('Error updating size'); }
   } else alert('Select flat and enter valid size');
 }
+
 async function addCharge(){
   const flat = document.getElementById('adminFlat').value;
   const desc = document.getElementById('chargeName').value.trim();
   const amt = parseInt(document.getElementById('chargeAmount').value);
   if(flat && desc && amt > 0){
     try{
-      await db.collection('flats').doc(flat).collection('dues').add({ desc, amount: amt, created: Date.now() });
+      await db.collection('flats').doc(flat).collection('dues').add({ desc, amount: amt, created: Date.now(), status: "unpaid" });
       document.getElementById('chargeName').value = '';
       document.getElementById('chargeAmount').value = '';
       refreshAdminTables();
     }catch(err){ console.error(err); alert('Error adding charge'); }
   } else alert('Fill flat, description and amount');
 }
+
 async function adminMarkPaid(flat, id, amount, desc){
   try{
-    await db.collection('flats').doc(flat).collection('dues').doc(id).delete();
+    await db.collection('flats').doc(flat).collection('dues').doc(id).update({ status: "paid", paidDate: new Date().toLocaleString() });
     await db.collection('payments').add({ flat, desc, amount, date: new Date().toLocaleString() });
     refreshAdminTables();
-  }catch(err){ console.error(err); alert('Error marking paid'); }
+  }catch(err){ console.error('adminMarkPaid error',err); alert('Error marking paid'); }
 }
+
+/* Refresh admin tables with filter (unpaid / paid / all) */
 async function refreshAdminTables(){
   const pBody = document.querySelector('#pendingTable tbody'); pBody.innerHTML = '';
   let totalPending = 0;
   const flats = allFlats();
 
-  // Fetch all flat sizes first
+  // read filter
+  const filter = document.getElementById('filterDues') ? document.getElementById('filterDues').value : 'unpaid';
+
+  // Fetch all flat sizes first (so history can show sqft)
   const flatSizes = {};
   const sizePromises = flats.map(async flat => {
-    const doc = await db.collection('flats').doc(flat).get();
-    flatSizes[flat] = doc.exists && doc.data().size ? doc.data().size : '';
+    try{
+      const doc = await db.collection('flats').doc(flat).get();
+      flatSizes[flat] = doc.exists && doc.data().size ? doc.data().size : '';
+    }catch(err){ flatSizes[flat] = ''; }
   });
   await Promise.all(sizePromises);
 
-  // Pending dues
+  // Pending dues / all dues based on filter
   for (const f of flats) {
     try {
       const duesSnap = await db.collection('flats').doc(f).collection('dues').orderBy('created', 'asc').get();
       if (!duesSnap.empty) {
         duesSnap.forEach(doc => {
           const d = doc.data();
-          totalPending += Number(d.amount) || 0;
+          const status = d.status || 'unpaid';
+          // decide if this row should appear given filter
+          if(filter === 'unpaid' && status === 'paid') return;
+          if(filter === 'paid' && status !== 'paid') return;
+          // accumulate pending only for unpaid entries
+          if(status !== 'paid') totalPending += Number(d.amount) || 0;
           const descEsc = (d.desc || '').replace(/'/g, "\\'");
+          let actionCell = '';
+          if(status === 'paid'){
+            actionCell = `Paid on ${d.paidDate || ''}`;
+          } else {
+            actionCell = `<button class="btn btn-small" onclick="adminMarkPaid('${f}','${doc.id}',${d.amount},'${descEsc}')">Mark Paid</button>`;
+          }
           pBody.innerHTML += `<tr>
             <td>${f}</td>
             <td>${flatSizes[f] || ''}</td>
             <td>${d.desc}</td>
             <td>${d.amount}</td>
-            <td><button class="btn btn-small" onclick="adminMarkPaid('${f}','${doc.id}',${d.amount},'${descEsc}')">Mark Paid</button></td>
+            <td>${actionCell}</td>
           </tr>`;
         });
       }
@@ -473,7 +373,8 @@ async function refreshAdminTables(){
   }
 
   // Payments history
-  const hBody = document.querySelector('#historyTable tbody'); hBody.innerHTML = ''; let totalCollected = 0;
+  const hBody = document.querySelector('#historyTable tbody'); hBody.innerHTML = '';
+  let totalCollected = 0;
   try {
     const paymentsSnap = await db.collection('payments').orderBy('date', 'desc').get();
     paymentsSnap.forEach(doc => {
@@ -488,8 +389,11 @@ async function refreshAdminTables(){
       </tr>`;
     });
   } catch (err) { console.error('Error reading payments', err); }
+
   document.getElementById('summaryBar').innerHTML = `<div>Total Pending: ₹${totalPending}</div><div>Total Collected: ₹${totalCollected}</div>`;
 }
+
+/* Init: populate selects, generate this month, refresh tables */
 (async function init(){
   try{
     const userSel = document.getElementById('userFlatSelect');
@@ -502,6 +406,7 @@ async function refreshAdminTables(){
         sel.appendChild(opt);
       });
     });
+    // ensure monthly dues exist (will not duplicate paid/unpaid if desc exists)
     await generateThisMonthMaintenance();
     await refreshAdminTables();
   }catch(err){
