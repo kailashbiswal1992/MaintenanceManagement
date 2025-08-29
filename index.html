@@ -36,7 +36,7 @@
     .btn-small { padding: 7px 10px; font-size: 13px; }
     .container { width: 97%; max-width: 1100px; margin: 30px auto; background: rgba(255,255,255,0.93); border-radius: var(--card-radius); box-shadow: var(--shadow); padding: 30px 22px; }
     .grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
-    @media(min-width:900px) { .grid { grid-template-columns:1fr 1fr; } }
+    /*@media(min-width:900px) { .grid { grid-template-columns:1fr 1fr; } }*/
     .card { background: #fff; border-radius: var(--card-radius); padding: 18px; box-shadow: var(--shadow); }
     h2, h3 { color: var(--primary); margin: 0 0 15px; font-family: var(--font); font-weight: 600; }
     select, input[type="text"], input[type="password"], input[type="number"] {
@@ -153,9 +153,57 @@
 
     <!-- Admin Panel -->
     <div class="card" id="adminPanel" style="display:none">
-      <h2>Admin Panel</h2>
+  <h2>Admin Panel</h2>
       <div class="summary" id="summaryBar"><div>Total Pending: ₹0</div><div>Total Collected: ₹0</div></div>
-
+<h3>Monthly Expenses</h3>
+<div>
+  <input type="text" id="expenseName" placeholder="Expense Name"/>
+  <input type="text" id="expenseDesc" placeholder="Description"/>
+  <input type="text" id="expenseVendor" placeholder="Fulfilled by Vendor"/>
+  <input type="number" id="expenseAmount" placeholder="Amount (₹)" min="0"/>
+  <button class="btn" onclick="addExpense()">Add Expense</button>
+  <p id="expenseSuccess" class="success" style="display:none;">✅ Expense added!</p>
+</div>
+<h4 id="expensesTableHeader" style="margin-bottom:6px;color:#2563eb"></h4>
+<div class="table-responsive">
+  <table id="expensesTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Vendor</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+<h3>Distribute Monthly Expense as Dues</h3>
+<div>
+  <select id="expenseSelect"><option value="">-- Select Expense --</option></select>
+  <button class="btn" onclick="distributeExpense('equal')">Divide Equally</button>
+  <button class="btn" onclick="distributeExpense('sqft')">Divide by Sqft</button>
+  <button class="btn" onclick="showGroupDivide()">Divide by Group</button>
+ <div id="groupDivideBox" style="display:none; margin-top:10px;">
+  <label>Enter Amount for 999 sqft:</label>
+  <input type="number" id="groupAmt999" placeholder="Amount for 999 sqft"/>
+  <label>Enter Amount for 690 sqft:</label>
+  <input type="number" id="groupAmt690" placeholder="Amount for 690 sqft"/>
+  <label>Enter Amount for 1026 sqft:</label>
+  <input type="number" id="groupAmt1026" placeholder="Amount for 1026 sqft"/>
+  <label>Enter Amount for 918 sqft:</label>
+  <input type="number" id="groupAmt918" placeholder="Amount for 918 sqft"/>
+  <label>Enter Amount for 1098 sqft:</label>
+  <input type="number" id="groupAmt1098" placeholder="Amount for 1098 sqft"/>
+  <label>Enter Amount for 1089 sqft:</label>
+  <input type="number" id="groupAmt1089" placeholder="Amount for 1089 sqft"/>
+   <label>Enter Amount for 1359 sqft:</label>
+  <input type="number" id="groupAmt1359" placeholder="Amount for 1359 sqft"/>
+  <button class="btn" onclick="distributeExpense('group')">Apply Group Dues</button>
+</div>
+  <p id="expenseDistSuccess" class="success" style="display:none;">✅ Dues added to flats!</p>
+</div>
       <h3>Change Admin Password</h3>
       <input type="password" id="newAdminPass" placeholder="Enter New Admin Password"/>
       <button class="btn" onclick="changeAdminPassword()">Update Admin Password</button>
@@ -193,6 +241,13 @@
         </thead>
         <tbody></tbody>
       </table>
+      <div style="margin-top:16px;">
+  <button class="btn btn-danger" onclick="deleteAllDues()">Delete All Dues</button>
+  <button class="btn btn-danger" onclick="deleteAllExpenses()">Delete All Expenses (This Month)</button>
+  <button class="btn btn-danger" onclick="deleteAllPayments()">Delete All Payment History</button>
+</div>
+<br>
+  <br>
        </div>
     </div>
   </div>
@@ -201,6 +256,28 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script>
+  // Restore session if available
+const savedFlat = localStorage.getItem('loggedInFlat');
+const adminLoggedIn = localStorage.getItem('adminLoggedIn');
+
+(async function restoreSession() {
+  if(savedFlat){
+    loggedInFlat = savedFlat;
+    document.getElementById('userLoginCard').style.display='none';
+    document.getElementById('residentCard').style.display='block';
+    document.getElementById('userLoginBtn').style.display='none';
+    document.getElementById('userLogoutBtn').style.display='inline-block';
+    document.getElementById('adminLoginBtn').style.display='none';
+    await renderResidentDues();
+  } else if(adminLoggedIn === 'true'){
+    document.getElementById('loginCard').style.display='none';
+    document.getElementById('adminPanel').style.display='block';
+    document.getElementById('adminLoginBtn').style.display='none';
+    document.getElementById('adminLogoutBtn').style.display='inline-block';
+    document.getElementById('userLoginBtn').style.display='none';
+    await refreshAdminTables();
+  }
+})();
 /* Firebase init */
 const firebaseConfig = { apiKey: "AIzaSyDykGxIq2GUDxFkv28NLmdRmiQzlEjvFuw", authDomain: "rento-56bca.firebaseapp.com", projectId: "rento-56bca", storageBucket: "rento-56bca.appspot.com", messagingSenderId: "641174222477", appId: "1:641174222477:web:0c6c5999787c2ca05d14c4", measurementId: "G-T3CSB1Z271" };
 firebase.initializeApp(firebaseConfig);
@@ -221,7 +298,7 @@ async function generateThisMonthMaintenance(){
       const snapshot = await duesRef.where('desc','==',label).get();
       if(snapshot.empty){ const flatDoc = await db.collection('flats').doc(flat).get();
         const sqft = flatDoc.exists && flatDoc.data().size ? flatDoc.data().size : 1000;
-        const amt = sqft * 2;
+        const amt = (sqft * 2)+800;
         await duesRef.add({ desc: label, amount: amt, created: Date.now(), status: "unpaid" });
       }
     }catch(err){ console.error('Err generating maintenance for', flat, err); }
@@ -242,6 +319,7 @@ async function userLogin(){
     const savedPass=doc.exists?doc.data().password:`flat${flat}`;
     if(pass===savedPass){
       loggedInFlat=flat;
+      localStorage.setItem('loggedInFlat', flat); // Save session
       document.getElementById('userLoginCard').style.display='none';
       document.getElementById('residentCard').style.display='block';
       document.getElementById('userLoginBtn').style.display='none';
@@ -251,7 +329,9 @@ async function userLogin(){
     } else alert('Invalid Password');
   }catch(err){ console.error(err); alert('Error checking password'); }
 }
-function userLogout(){ loggedInFlat=null; document.getElementById('residentCard').style.display='none'; document.getElementById('userLoginBtn').style.display='inline-block'; document.getElementById('userLogoutBtn').style.display='none'; document.getElementById('adminLoginBtn').style.display='inline-block'; }
+function userLogout(){ loggedInFlat=null; 
+localStorage.removeItem('loggedInFlat'); // Remove session
+document.getElementById('residentCard').style.display='none'; document.getElementById('userLoginBtn').style.display='inline-block'; document.getElementById('userLogoutBtn').style.display='none'; document.getElementById('adminLoginBtn').style.display='inline-block'; }
 async function changeUserPassword(){
   const newPass=document.getElementById("newUserPass").value;
   if(!loggedInFlat||!newPass){ alert("Enter new password!"); return; }
@@ -271,10 +351,11 @@ async function renderResidentDues(){
       let actionHtml="";
       if(d.status==="paid"){ actionHtml=`<div class="success">✅ Paid on ${d.paidDate||""}</div>`; }
       else{
-        actionHtml=`<div class="actions">
-          <a class="btn btn-small" href="upi://pay?pa=test@ybl&am=${encodeURIComponent(d.amount)}&cu=INR&tn=${encodeURIComponent(d.desc)}">Pay Now</a>
-          <button class="btn btn-small" onclick="markPaid('${loggedInFlat}','${doc.id}',${d.amount},'${descEsc}')">Mark as Paid</button>
-        </div>`;
+       actionHtml = `<div class="actions">
+  <a class="btn btn-small" href="upi://pay?pa=test@ybl&am=${encodeURIComponent(d.amount)}&cu=INR&tn=${encodeURIComponent(d.desc)}">Pay Now</a>
+  <button class="btn btn-small" onclick="markPaid('${loggedInFlat}','${doc.id}',${d.amount},'${descEsc}')">Mark as Paid</button>
+  <div class="muted" style="margin-top:4px;">(Pay Now works on Mobile/Tab with payment apps. Please use such a device.)</div>
+</div>`;
       }
       row.innerHTML=`<div><div class="due-title">${d.desc}</div><div class="muted">₹${d.amount}</div></div>${actionHtml}`;
       wrap.appendChild(row);
@@ -303,6 +384,7 @@ async function adminLogin(){
     const doc = await db.collection("users").doc("admin").get();
     const savedPass = doc.exists ? doc.data().password : "admin123";
     if(pass === savedPass){
+      localStorage.setItem('adminLoggedIn', 'true'); // Save session
       document.getElementById('loginCard').style.display='none';
       document.getElementById('adminPanel').style.display='block';
       document.getElementById('adminLoginBtn').style.display='none';
@@ -314,6 +396,7 @@ async function adminLogin(){
 }
 
 function adminLogout(){
+  localStorage.removeItem('adminLoggedIn'); // Remove session
   document.getElementById('adminPanel').style.display='none';
   document.getElementById('adminLoginBtn').style.display='inline-block';
   document.getElementById('adminLogoutBtn').style.display='none';
@@ -402,7 +485,8 @@ async function refreshAdminTables(){
           if(status === 'paid'){
             actionCell = `Paid on ${d.paidDate || ''}`;
           } else {
-            actionCell = `<button class="btn btn-small" onclick="adminMarkPaid('${f}','${doc.id}',${d.amount},'${descEsc}')">Mark Paid</button>`;
+            actionCell = `<button class="btn btn-small" onclick="adminMarkPaid('${f}','${doc.id}',${d.amount},'${descEsc}')">Mark Paid</button>
+            <button class="btn btn-small btn-danger" onclick="adminDeleteDue('${f}','${doc.id}')">Delete</button>`;
           }
           pBody.innerHTML += `<tr>
             <td>${f}</td>
@@ -435,7 +519,200 @@ async function refreshAdminTables(){
   } catch (err) { console.error('Error reading payments', err); }
 
   document.getElementById('summaryBar').innerHTML = `<div>Total Pending: ₹${totalPending}</div><div>Total Collected: ₹${totalCollected}</div>`;
+
+  await renderExpensesTable();
+await refreshExpenseSelect();
 }
+async function addExpense() {
+  const name = document.getElementById('expenseName').value.trim();
+  const desc = document.getElementById('expenseDesc').value.trim();
+  const vendor = document.getElementById('expenseVendor').value.trim();
+  const amount = Number(document.getElementById('expenseAmount').value);
+  if(!name || !desc || !vendor || !amount || amount <= 0) { alert('Please fill all fields with valid amount'); return; }
+  try {
+    const tag = currentMonthYear();
+    await db.collection('expenses').doc(tag)
+      .collection('items').add({
+        name, desc, vendor, amount,
+        date: new Date().toLocaleString()
+      });
+    document.getElementById('expenseName').value = '';
+    document.getElementById('expenseDesc').value = '';
+    document.getElementById('expenseVendor').value = '';
+    document.getElementById('expenseAmount').value = '';
+    document.getElementById('expenseSuccess').style.display = 'block';
+    setTimeout(()=>{document.getElementById('expenseSuccess').style.display='none';}, 1600);
+    await renderExpensesTable(); // Refresh table
+    await refreshExpenseSelect();
+  } catch(err) {
+    console.error('Expense add error', err);
+    alert('Error adding expense');
+  }
+}
+
+async function renderExpensesTable() {
+  document.getElementById('expensesTableHeader').textContent = currentMonthYear() + ' Expenses Table';
+  const tag = currentMonthYear();
+  const tbody = document.querySelector('#expensesTable tbody');
+  tbody.innerHTML = '';
+  let total = 0;
+  try {
+    const snap = await db.collection('expenses').doc(tag)
+      .collection('items').orderBy('date','asc').get();
+    snap.forEach(doc => {
+      const e = doc.data();
+      total += Number(e.amount) || 0;
+      tbody.innerHTML += `<tr>
+        <td>${e.name}</td>
+        <td>${e.desc}</td>
+        <td>${e.vendor}</td>
+        <td>₹${e.amount}</td>
+        <td>${e.date}</td>
+      </tr>`;
+    });
+    // Show total below table
+    tbody.innerHTML += `<tr>
+      <td colspan="3" style="text-align:right;font-weight:600;">Total</td>
+      <td style="font-weight:700;">₹${total}</td>
+      <td></td>
+    </tr>`;
+  } catch(err) {
+    tbody.innerHTML = '<tr><td colspan="5">Error loading expenses</td></tr>';
+  }
+}
+// Populate expense select on table render
+async function refreshExpenseSelect() {
+  const select = document.getElementById('expenseSelect');
+  select.innerHTML = '<option value="">-- Select Expense --</option>' +
+                     '<option value="__total__">Total (All Expenses)</option>';
+  const tag = currentMonthYear();
+  try {
+    const snap = await db.collection('expenses').doc(tag).collection('items').orderBy('date','asc').get();
+    snap.forEach(doc => {
+      const e = doc.data();
+      select.innerHTML += `<option value="${doc.id}">${e.name} (${e.amount})</option>`;
+    });
+  } catch {}
+}
+
+
+
+function showGroupDivide() {
+  document.getElementById('groupDivideBox').style.display = 'block';
+}
+async function adminDeleteDue(flat, dueId) {
+  if(!confirm("Are you sure you want to delete this due? This cannot be undone.")) return;
+  try {
+    await db.collection('flats').doc(flat).collection('dues').doc(dueId).delete();
+    await refreshAdminTables();
+    alert('Due deleted!');
+    document.getElementById('expenseDistSuccess').textContent = '✅ Due deleted!';
+    document.getElementById('expenseDistSuccess').style.display = 'block';
+    setTimeout(()=>{document.getElementById('expenseDistSuccess').style.display='none';}, 1600);
+  } catch(err) {
+    console.error('Error deleting due', err);
+    alert('Error deleting due');
+  }
+}
+
+async function distributeExpense(type) {
+  const tag = currentMonthYear();
+  const expenseId = document.getElementById('expenseSelect').value;
+  if(!expenseId) { alert('Select expense'); return; }
+  const isTotal = (expenseId === "__total__");
+ let expense = {};
+if (isTotal) {
+  const snap = await db.collection('expenses').doc(tag).collection('items').orderBy('date','asc').get();
+  expense.amount = 0;
+  expense.desc = "";
+  expense.name = "Monthly Expenses";
+  const descArr = [];
+  snap.forEach(doc => {
+    const e = doc.data();
+    expense.amount += Number(e.amount) || 0;
+    descArr.push(`${e.name}: ₹${e.amount}`);
+  });
+  expense.desc = descArr.join(', ');
+} else {
+  const expenseSnap = await db.collection('expenses').doc(tag).collection('items').doc(expenseId).get();
+  if(!expenseSnap.exists) { alert('Expense not found'); return; }
+  expense = expenseSnap.data();
+}
+  const flats = allFlats();
+  let added = 0;
+
+  if(type === 'equal') {
+    const perFlat = Math.round(Number(expense.amount) / flats.length);
+    for(const flat of flats) {
+      await db.collection('flats').doc(flat).collection('dues').add({
+        desc: expense.name + ' — ' + expense.desc,
+        amount: perFlat,
+        created: Date.now(),
+        status: "unpaid"
+      });
+      added++;
+    }
+  } else if(type === 'sqft') {
+    // Get total sqft
+    let totalSqft = 0;
+    const flatSizes = {};
+    for(const flat of flats) {
+      const doc = await db.collection('flats').doc(flat).get();
+      const size = doc.exists && doc.data().size ? doc.data().size : 1000;
+      flatSizes[flat] = size;
+      totalSqft += size;
+    }
+    for(const flat of flats) {
+      const share = Math.round(Number(expense.amount) * flatSizes[flat] / totalSqft);
+      await db.collection('flats').doc(flat).collection('dues').add({
+        desc: expense.name + ' — ' + expense.desc,
+        amount: share,
+        created: Date.now(),
+        status: "unpaid"
+      });
+      added++;
+    }
+  } else if(type === 'group') {
+    // Get amounts for each group
+    const amt999 = Number(document.getElementById('groupAmt999').value);
+    const amt690 = Number(document.getElementById('groupAmt690').value);
+    const amt1026 = Number(document.getElementById('groupAmt1026').value);
+    const amt918 = Number(document.getElementById('groupAmt918').value);
+    const amt1098 = Number(document.getElementById('groupAmt1098').value);
+    const amt1089 = Number(document.getElementById('groupAmt1089').value);
+    const amt1359 = Number(document.getElementById('groupAmt1359').value);
+    if(!amt999 && !amt690 && !amt1026 && !amt918 && !amt1098 && !amt1089 && !amt1359) { 
+      alert('Enter at least one group amount'); return; 
+    }
+    for(const flat of flats) {
+      const doc = await db.collection('flats').doc(flat).get();
+      const size = doc.exists && doc.data().size ? doc.data().size : 1000;
+      let amt = 0;
+      if(size == 999) amt = amt999;
+      else if(size == 690) amt = amt690;
+      else if(size == 1026) amt = amt1026;
+      else if(size == 918) amt = amt918;
+      else if(size == 1098) amt = amt1098;
+      else if(size == 1089) amt = amt1089;
+      else if(size == 1359) amt = amt1359;
+      else continue; // skip flats not in any group
+      if(amt > 0) {
+        await db.collection('flats').doc(flat).collection('dues').add({
+          desc: expense.name + ' — ' + expense.desc,
+          amount: amt,
+          created: Date.now(),
+          status: "unpaid"
+        });
+        added++;
+      }
+    }
+    document.getElementById('groupDivideBox').style.display = 'none';
+  }
+  document.getElementById('expenseDistSuccess').style.display = 'block';
+  setTimeout(()=>{document.getElementById('expenseDistSuccess').style.display = 'none';}, 1600);
+  await refreshAdminTables();
+}
+
 
 /* Init: populate selects, generate this month, refresh tables */
 (async function init(){
@@ -457,6 +734,54 @@ async function refreshAdminTables(){
     console.error('Init error',err);
   }
 })();
+async function deleteAllDues() {
+  if(!confirm("Delete ALL unpaid dues for ALL flats? This cannot be undone!")) return;
+  const flats = allFlats();
+  try {
+    for(const flat of flats) {
+      const snap = await db.collection('flats').doc(flat).collection('dues').where('status', '!=', 'paid').get();
+      const batch = db.batch();
+      snap.forEach(doc => batch.delete(doc.ref));
+      await batch.commit();
+    }
+    alert('All unpaid dues deleted!');
+    await refreshAdminTables();
+  } catch(err) {
+    console.error('Error deleting unpaid dues', err);
+    alert('Error deleting unpaid dues');
+  }
+}
+
+async function deleteAllExpenses() {
+  if(!confirm("Delete ALL monthly expenses for THIS month? This cannot be undone!")) return;
+  const tag = currentMonthYear();
+  try {
+    const snap = await db.collection('expenses').doc(tag).collection('items').get();
+    const batch = db.batch();
+    snap.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+    alert('All expenses deleted!');
+    await refreshAdminTables();
+  } catch(err) {
+    console.error('Error deleting all expenses', err);
+    alert('Error deleting all expenses');
+  }
+}
+
+async function deleteAllPayments() {
+  if(!confirm("Delete ALL payment history? This cannot be undone!")) return;
+  try {
+    const snap = await db.collection('payments').get();
+    const batch = db.batch();
+    snap.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+    alert('All payment history deleted!');
+    await refreshAdminTables();
+  } catch(err) {
+    console.error('Error deleting payments', err);
+    alert('Error deleting payment history');
+  }
+}
 </script>
 </body>
 </html>
