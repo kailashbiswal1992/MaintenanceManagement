@@ -110,6 +110,46 @@ button:disabled {
   box-shadow: none !important;
   opacity: 1 !important;
 }
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 8px;
+  /* Make sure parent containers don't crop it */
+  z-index: 100;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  max-width: 90vw; /* responsive for small screens */
+  width: 290px;
+  background-color: #2563eb;
+  color: #fff;
+  text-align: left;
+  border-radius: 8px;
+  padding: 9px 14px;
+  position: absolute;
+  z-index: 200;
+  left: 50%;
+  bottom: 120%; /* Always above */
+  transform: translateX(-50%);
+  font-size: 15px;
+  box-shadow: 0 2px 12px rgba(30,58,138,0.13);
+  opacity: 0;
+  transition: opacity 0.25s;
+  overflow-wrap: break-word;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+@media (max-width: 600px) {
+  .tooltip .tooltiptext {
+    width: 95vw;
+    left: 0;
+    transform: none;
+    bottom: 130%;
+  }
+}
   </style>
 </head>
 <body>
@@ -196,6 +236,22 @@ button:disabled {
 </div>
 <br>
 <h3>Maintenance Calculation Formula</h3>
+<span class="tooltip">
+ <span style="display: inline-flex; align-items: center;">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style="vertical-align: middle; margin-right: 3px;">
+    <circle cx="10" cy="10" r="9" stroke="#2563eb" stroke-width="2" fill="#fff"/>
+    <rect x="9" y="8" width="2" height="6" rx="1" fill="#2563eb"/>
+    <rect x="9" y="5" width="2" height="2" rx="1" fill="#2563eb"/>
+  </svg>
+  <span style="color:#2563eb;font-weight:500;cursor:pointer;">Info</span>
+</span>
+  <span class="tooltiptext">
+    Monthly Maintenance calculates automatically every month 1st based on the formula provided below.<br>
+    If you wish to update the formula, please do so <b>before 1st of the month</b>.
+  </span>
+</span>
 <label for="maintenanceFormula">Enter formula (use <b>sqft</b> as variable):</label>
 <input type="text" id="maintenanceFormula" placeholder="e.g. (sqft * 2) + 800" value="(sqft * 2) + 800" />
 <button class="btn" onclick="saveFormula()">Save Formula</button>
