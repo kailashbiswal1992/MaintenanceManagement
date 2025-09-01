@@ -300,7 +300,7 @@ const adminLoggedIn = localStorage.getItem('adminLoggedIn');
     document.getElementById('userLoginBtn').style.display='none';
     document.getElementById('userLogoutBtn').style.display='inline-block';
     document.getElementById('adminLoginBtn').style.display='none';
-    await renderResidentDues();
+     await renderResidentDues();
   } else if(adminLoggedIn === 'true'){
     document.getElementById('loginCard').style.display='none';
     document.getElementById('adminPanel').style.display='block';
@@ -386,6 +386,9 @@ async function userLogin(){
       document.getElementById('userLoginBtn').style.display='none';
       document.getElementById('userLogoutBtn').style.display='inline-block';
       document.getElementById('adminLoginBtn').style.display='none';
+      document.getElementById('userExpensesBox').innerHTML = '';
+      document.getElementById('userExpenseMonth').value = ''; // Optional: also reset dropdown
+   
       renderResidentDues();
     } else alert('Invalid Password');
   }catch(err){ console.error(err); alert('Error checking password'); }
