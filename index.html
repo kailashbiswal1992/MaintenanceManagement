@@ -998,6 +998,9 @@ window.onload = function() {
   document.getElementById('deleteExpensesBtn').disabled = true;
   document.getElementById('deletePaymentsBtn').disabled = true;
 };
+ document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
 </script>
 <div style="
   position: fixed;
