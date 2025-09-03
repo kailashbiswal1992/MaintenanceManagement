@@ -546,7 +546,7 @@ async function renderResidentDues(){
       if(d.status==="paid"){ actionHtml=`<div class="success">✅ Paid on ${d.paidDate||""}</div>`; }
       else{
        actionHtml = `<div class="actions">
-  <a class="btn btn-small" href="upi://pay?pa=eleganceenclave@axl&am=${encodeURIComponent(d.amount)}&cu=INR&tn=${encodeURIComponent(d.desc)}">Pay Now</a>
+  <a class="btn btn-small" href="upi://pay?pa=eleganceenclave@hdfcbank&am=${encodeURIComponent(d.amount)}&cu=INR&tn=${encodeURIComponent(d.desc)}">Pay Now</a>
   <button class="btn btn-small" onclick="markPaid('${loggedInFlat}','${doc.id}',${d.amount},'${descEsc}')">Mark as Paid</button>
   <div class="muted" style="margin-top:4px;">(Pay Now works on Mobile/Tab with payment apps. Please use such a device.)</div>
 </div>`;
@@ -1013,7 +1013,7 @@ window.onload = function() {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.1
+  v2025.1.0.2
 </div>
 </body>
 </html>
