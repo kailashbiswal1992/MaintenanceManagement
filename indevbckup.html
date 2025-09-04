@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Apartment Maintenance Management — Firebase (compat)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f3f6fa;
+      --primary: #2563eb;
+      --primary-dark: #1e3a8a;
+      --accent: #38bdf8;
+      --accent-2: #fbbf24;
+      --danger: #ef4444;
+      --card-radius: 16px;
+      --header-radius: 22px;
+      --shadow: 0 6px 18px rgba(37,99,235,0.08);
+      --header-shadow: 0 4px 14px rgba(37,99,235,0.18);
+      --font: 'Poppins', Arial, sans-serif;
+    }
+    body { font-family: var(--font); background: linear-gradient(120deg, #e0e7ff 0%, #f3f6fa 100%); margin: 0; }
+    header {
+      background: linear-gradient(90deg, var(--primary-dark) 60%, var(--primary) 100%);
+      color: #fff; padding: 22px 24px; font-size: 1.7rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom-left-radius: var(--header-radius); border-bottom-right-radius: var(--header-radius);
+      box-shadow: var(--header-shadow); margin-bottom: 20px;
+    }
+    .brand { display: flex; gap: 17px; align-items: center; }
+    .header-logo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 12px rgba(0,0,0,0.13); border: 2px solid #fff; background: #fff; flex-shrink: 0; }
+    .brand span { font-weight: 600; font-size: 1.2em; letter-spacing: 1px; text-shadow: 0 2px 6px rgba(30,58,138,0.18); }
+    .btn { background: linear-gradient(135deg, var(--primary) 60%, var(--accent) 100%); color: #fff; border: 0; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 15px; font-family: var(--font); transition: background 0.3s; box-shadow: 0 2px 8px rgba(37,99,235,0.09); margin-left: 6px; }
+    .btn:hover { filter: brightness(0.93); }
+    .btn-danger { background: linear-gradient(135deg, var(--danger) 60%, #b91c1c 100%);}
+    .btn-small { padding: 7px 10px; font-size: 13px; }
+    .container { width: 97%; max-width: 1100px; margin: 30px auto; background: rgba(255,255,255,0.93); border-radius: var(--card-radius); box-shadow: var(--shadow); padding: 30px 22px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
+    /*@media(min-width:900px) { .grid { grid-template-columns:1fr 1fr; } }*/
+    .card { background: #fff; border-radius: var(--card-radius); padding: 18px; box-shadow: var(--shadow); }
+    h2, h3 { color: var(--primary); margin: 0 0 15px; font-family: var(--font); font-weight: 600; }
+    select, input[type="text"], input[type="password"], input[type="number"] {
+      width: 100%; padding: 12px 14px; margin-top: 10px; margin-bottom: 16px;
+      border: 1.5px solid #b6c0e0; border-radius: 10px; outline: none; background: #f3f6fa;
+      font-size: 16px; transition: border-color 0.2s; box-sizing: border-box; font-family: var(--font);
+    }
+    select:focus, input:focus { border-color: #2563eb; }
+    label { font-weight: 500; margin-top: 14px; margin-bottom: 0px; display: block; color: #2563eb; font-size: 15px; }
+    .due-item { background: linear-gradient(90deg, #e0e7ff 60%, #f3f6fa 100%); padding: 12px; margin: 8px 0; border-left: 7px solid var(--accent-2); display: flex; justify-content: space-between; align-items: center; gap: 12px; border-radius: 12px; box-shadow: 0 2px 6px rgba(37,99,235,0.05); }
+    .due-title { font-weight: 600; font-size: 1.08em;}
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .muted { color: #6b7280; font-size: 14px;}
+    .success { color: #22c55e; font-weight: 700; display: flex; gap: 7px; align-items: center; padding: 10px 0;}
+    table { width: 100%; border-collapse: collapse; margin-top: 13px; }
+    th, td { border: 1px solid #e7eaee; padding: 7px 10px; text-align: center; font-size: 14px; font-family: var(--font); }
+    th { background: #e0e7ff; color: var(--primary); font-weight: 700; }
+    .summary { display: flex; gap: 23px; margin-bottom: 16px; }
+    .summary div { background: #e0e7ff; padding: 10px 14px; border-radius: 12px; font-weight: 600; color: var(--primary); }
+    @media (max-width: 700px) { header { font-size: 1.05rem; padding: 14px 8px; } .header-logo { width: 36px; height: 36px;} .container { padding: 12px 5px;} .card { padding: 11px; } h2, h3 { font-size: 1rem; } }
+  .table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+@media (max-width: 600px) {
+  body { font-size: 15px; }
+  .container {
+    width: 100%;
+    padding: 6px 2px;
+    margin: 10px auto;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .brand span {
+    font-size: 1em;
+  }
+  .header-logo {
+    width: 32px;
+    height: 32px;
+  }
+  .card {
+    padding: 8px;
+  }
+  .btn, .btn-small {
+    width: 100%;
+    margin: 8px 0 0 0;
+    min-height: 40px;
+  }
+  table, th, td {
+    font-size: 12px;
+    padding: 3px 2px;
+  }
+  h2, h3 {
+    font-size: 1.05rem;
+  }
+  .summary {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+.btn:disabled,
+.btn[disabled],
+button:disabled {
+  background: #d1d5db !important; /* Tailwind slate-300 */
+  color: #888 !important;
+  cursor: not-allowed !important;
+  border: none !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 8px;
+  /* Make sure parent containers don't crop it */
+  z-index: 100;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  max-width: 90vw; /* responsive for small screens */
+  width: 290px;
+  background-color: #2563eb;
+  color: #fff;
+  text-align: left;
+  border-radius: 8px;
+  padding: 9px 14px;
+  position: absolute;
+  z-index: 200;
+  left: 50%;
+  bottom: 120%; /* Always above */
+  transform: translateX(-50%);
+  font-size: 15px;
+  box-shadow: 0 2px 12px rgba(30,58,138,0.13);
+  opacity: 0;
+  transition: opacity 0.25s;
+  overflow-wrap: break-word;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+@media (max-width: 600px) {
+  .tooltip .tooltiptext {
+    width: 95vw;
+    left: 0;
+    transform: none;
+    bottom: 130%;
+  }
+}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">
+     <a href="https://eleganceenclave.tiiny.site/" style="display: inline-block;">
+       <img src="https://i.ibb.co/ZRNQxN5q/file-00000000777461fa82518c850f7680e9.png" alt="Logo" class="header-logo" />
+       </a>
+    <span>🏢 Apartment Maintenance</span>
+  </div>
+  <div>
+    <button class="btn" id="userLoginBtn" onclick="showUserLogin()">User Login</button>
+    <button class="btn btn-danger" id="userLogoutBtn" style="display:none" onclick="userLogout()">Logout</button>
+    <button class="btn" id="adminLoginBtn" onclick="showAdminLogin()">Admin Login</button>
+    <button class="btn btn-danger" id="adminLogoutBtn" style="display:none" onclick="adminLogout()">Logout</button>
+  </div>
+</header>
+
+<div class="container">
+  <div class="grid">
+    <!-- User Login -->
+    <div class="card" id="userLoginCard" style="display:none">
+      <h2>User Login</h2>
+      <label for="userFlatSelect">Select Flat Number</label>
+      <select id="userFlatSelect"><option value="">-- Select Flat --</option></select>
+      <label for="userPass">Password</label>
+      <input type="password" id="userPass" placeholder="Enter Password"/>
+      <button class="btn" onclick="userLogin()">Login</button>
+      <p class="muted">Default password = flat&lt;flatNo&gt; (e.g. flat101)</p>
+    </div>
+
+    <!-- Resident Dues -->
+    <div class="card" id="residentCard" style="display:none">
+      <h2>Resident — Dues</h2>
+      <div id="dueCard"></div>
+      
+      <h3>View Monthly Expenses</h3>
+<label for="userExpenseMonth">Select Month & Year</label>
+<select id="userExpenseMonth"></select>
+<div id="userExpensesBox"></div>
+
+      <h3>Change Password</h3>
+      <input type="password" id="newUserPass" placeholder="Enter New Password"/>
+      <button class="btn" onclick="changeUserPassword()">Update Password</button>
+    </div>
+
+    <!-- Admin Login -->
+    <div class="card" id="loginCard" style="display:none">
+      <h2>Admin Login</h2>
+      <label>Username</label>
+      <input type="text" id="adminUser" placeholder=""/>
+      <label>Password</label>
+      <input type="password" id="adminPass" placeholder=""/>
+      <button class="btn" onclick="adminLogin()">Login</button>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="card" id="adminPanel" style="display:none">
+  <h2>Admin Panel</h2>
+      <div class="summary" id="summaryBar"><div>Total Pending: ₹0</div><div>Total Collected: ₹0</div></div>
+<h3>Monthly Expenses</h3>
+<div>
+  <input type="text" id="expenseName" placeholder="Expense Name"/>
+  <input type="text" id="expenseDesc" placeholder="Description"/>
+  <input type="text" id="expenseVendor" placeholder="Fulfilled by Vendor"/>
+  <input type="number" id="expenseAmount" placeholder="Amount (₹)" min="0"/>
+  <button class="btn" onclick="addExpense()">Add Expense</button>
+  <p id="expenseSuccess" class="success" style="display:none;">✅ Expense added!</p>
+</div>
+<h4 id="expensesTableHeader" style="margin-bottom:6px;color:#2563eb"></h4>
+<div class="table-responsive">
+  <table id="expensesTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Vendor</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+<br>
+<h3>Maintenance Calculation Formula</h3>
+<span class="tooltip">
+ <span style="display: inline-flex; align-items: center;">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style="vertical-align: middle; margin-right: 3px;">
+    <circle cx="10" cy="10" r="9" stroke="#2563eb" stroke-width="2" fill="#fff"/>
+    <rect x="9" y="8" width="2" height="6" rx="1" fill="#2563eb"/>
+    <rect x="9" y="5" width="2" height="2" rx="1" fill="#2563eb"/>
+  </svg>
+  <span style="color:#2563eb;font-weight:500;cursor:pointer;">Info</span>
+</span>
+  <span class="tooltiptext">
+    Monthly Maintenance calculates automatically every month 1st based on the formula provided below.<br>
+    If you wish to update the formula, please do so <b>before 1st of the month</b>.
+  </span>
+</span>
+<label for="maintenanceFormula">Enter formula (use <b>sqft</b> as variable):</label>
+<input type="text" id="maintenanceFormula" placeholder="e.g. (sqft * 2) + 800" value="(sqft * 2) + 800" />
+<button class="btn" onclick="saveFormula()">Save Formula</button>
+<p id="formulaSavedMsg" class="success" style="display:none;">✅ Formula saved!</p>
+<br>
+<h3>Distribute Monthly Expense as Dues</h3>
+<div>
+  <select id="expenseSelect"><option value="">-- Select Expense --</option></select>
+  <button class="btn" onclick="distributeExpense('equal')">Divide Equally</button>
+  <button class="btn" onclick="distributeExpense('sqft')">Divide by Sqft</button>
+  <button class="btn" onclick="showGroupDivide()">Divide by Group</button>
+ <div id="groupDivideBox" style="display:none; margin-top:10px;">
+  <label>Enter Amount for 999 sqft:</label>
+  <input type="number" id="groupAmt999" placeholder="Amount for 999 sqft"/>
+  <label>Enter Amount for 690 sqft:</label>
+  <input type="number" id="groupAmt690" placeholder="Amount for 690 sqft"/>
+  <label>Enter Amount for 1026 sqft:</label>
+  <input type="number" id="groupAmt1026" placeholder="Amount for 1026 sqft"/>
+  <label>Enter Amount for 918 sqft:</label>
+  <input type="number" id="groupAmt918" placeholder="Amount for 918 sqft"/>
+  <label>Enter Amount for 1098 sqft:</label>
+  <input type="number" id="groupAmt1098" placeholder="Amount for 1098 sqft"/>
+  <label>Enter Amount for 1089 sqft:</label>
+  <input type="number" id="groupAmt1089" placeholder="Amount for 1089 sqft"/>
+   <label>Enter Amount for 1359 sqft:</label>
+  <input type="number" id="groupAmt1359" placeholder="Amount for 1359 sqft"/>
+  <button class="btn" onclick="distributeExpense('group')">Apply Group Dues</button>
+</div>
+  <p id="expenseDistSuccess" class="success" style="display:none;">✅ Dues added to flats!</p>
+</div>
+<br>
+      <h3>Update Flat Size</h3>
+      <select id="sizeFlat"><option value="">-- Select Flat --</option></select>
+      <input type="number" id="flatSize" placeholder="Enter Sqft"/>
+      <button class="btn" onclick="updateFlatSize()">Save Size</button>
+<br>
+      <h3>Add Custom Charge</h3>
+      <select id="adminFlat"><option value="">-- Select Flat --</option></select>
+      <input type="text" id="chargeName" placeholder="Charge Description"/>
+      <input type="number" id="chargeAmount" placeholder="Amount (₹)"/>
+      <button class="btn" onclick="addCharge()">Add Charge</button>
+<br>
+      <h3>Pending Dues</h3>
+      <label>Show: </label>
+      <select id="filterDues" onchange="refreshAdminTables()">
+        <option value="unpaid">Only Unpaid</option>
+        <option value="paid">Only Paid</option>
+        <option value="all">All</option>
+      </select>
+<div class="table-responsive">
+      <table id="pendingTable">
+        <thead>
+          <tr><th>Flat</th><th>Sqft</th><th>Description</th><th>Amount</th><th>Status / Action</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+<br>
+      <h3>Payment History</h3>
+      <table id="historyTable">
+        <thead>
+          <tr><th>Flat</th><th>Sqft</th><th>Description</th><th>Amount</th><th>Date</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <br>
+       <h3>Change Admin Password</h3>
+      <input type="password" id="newAdminPass" placeholder="Enter New Admin Password"/>
+      <button class="btn" onclick="changeAdminPassword()">Update Admin Password</button>
+<br>
+      <div style="margin-top:16px;">
+        <div style="margin-top:16px;">
+  <label style="font-weight:600;">
+    <input type="checkbox" id="enableDeleteToggle" onchange="toggleDeleteButtons()" style="accent-color:#ef4444;"/>
+    Enable Delete Actions
+  </label>
+  <div id="deleteWarning" style="display:none;color:#ef4444;font-weight:600;margin-bottom:10px;">
+    ⚠️ Warning: Deleting data is irreversible. Proceed with caution!
+  </div>
+ <button class="btn btn-danger" id="deleteDuesBtn" onclick="deleteAllDues()" disabled>Delete All Dues</button>
+<button class="btn btn-danger" id="deleteExpensesBtn" onclick="deleteAllExpenses()" disabled>Delete All Expenses (This Month)</button>
+<button class="btn btn-danger" id="deletePaymentsBtn" onclick="deleteAllPayments()" disabled>Delete All Payment History</button>
+</div>
+  <br>
+  <br>
+       </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script>
+  // Restore session if available
+const savedFlat = localStorage.getItem('loggedInFlat');
+const adminLoggedIn = localStorage.getItem('adminLoggedIn');
+
+(async function restoreSession() {
+  if(savedFlat){
+    loggedInFlat = savedFlat;
+    document.getElementById('userLoginCard').style.display='none';
+    document.getElementById('residentCard').style.display='block';
+    document.getElementById('userLoginBtn').style.display='none';
+    document.getElementById('userLogoutBtn').style.display='inline-block';
+    document.getElementById('adminLoginBtn').style.display='none';
+     await renderResidentDues();
+  } else if(adminLoggedIn === 'true'){
+    document.getElementById('loginCard').style.display='none';
+    document.getElementById('adminPanel').style.display='block';
+    document.getElementById('adminLoginBtn').style.display='none';
+    document.getElementById('adminLogoutBtn').style.display='inline-block';
+    document.getElementById('userLoginBtn').style.display='none';
+    await refreshAdminTables();
+  }
+})();
+/* Firebase init */
+const firebaseConfig = { apiKey: "AIzaSyDykGxIq2GUDxFkv28NLmdRmiQzlEjvFuw", authDomain: "rento-56bca.firebaseapp.com", projectId: "rento-56bca", storageBucket: "rento-56bca.appspot.com", messagingSenderId: "641174222477", appId: "1:641174222477:web:0c6c5999787c2ca05d14c4", measurementId: "G-T3CSB1Z271" };
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+let loggedInFlat = null;
+
+/* Helpers */
+function allFlats(){ const list=[]; for(let f=0; f<=4; f++){ for(let n=1; n<=7; n++){ list.push(`${f}${String(n).padStart(2,'0')}`); } } for(let n=1; n<=3; n++){ list.push(`5${String(n).padStart(2,'0')}`); } return list; }
+function currentMonthYear(){ return new Date().toLocaleString('default',{month:'long', year:'numeric'}); }
+
+/* Auto-generate monthly dues */
+async function generateThisMonthMaintenance(){
+  const tag = currentMonthYear(); 
+  const flats = allFlats();
+  const formula = await getMaintenanceFormula(); // fetch from Firebase
+  for(const flat of flats){
+    const duesRef = db.collection('flats').doc(flat).collection('dues');
+    const label = `Maintenance for ${tag}`;
+    try{
+      const snapshot = await duesRef.where('desc','==',label).get();
+      if(snapshot.empty){
+        const flatDoc = await db.collection('flats').doc(flat).get();
+        const sqft = flatDoc.exists && flatDoc.data().size ? flatDoc.data().size : 1000;
+        let amt = 0;
+        try {
+          amt = Function('sqft', 'return ' + formula)(sqft);
+        } catch(e) {
+          amt = (sqft * 2) + 800; // fallback
+        }
+        await duesRef.add({ desc: label, amount: amt, created: Date.now(), status: "unpaid" });
+      }
+    }catch(err){ console.error('Err generating maintenance for', flat, err); }
+  }
+}
+async function getMaintenanceFormula() {
+  try {
+    const doc = await db.collection('settings').doc('maintenanceFormula').get();
+    return doc.exists && doc.data().formula ? doc.data().formula : '(sqft * 2) + 800';
+  } catch (err) {
+    return '(sqft * 2) + 800';
+  }
+}
+async function saveFormula() {
+  const formula = document.getElementById('maintenanceFormula').value.trim();
+  if (!formula) { alert('Enter a valid formula!'); return; }
+  try {
+    // Save to Firestore under a settings document
+    await db.collection('settings').doc('maintenanceFormula').set({ formula });
+    document.getElementById('formulaSavedMsg').style.display = 'block';
+    setTimeout(()=>{document.getElementById('formulaSavedMsg').style.display='none';}, 1200);
+  } catch (err) {
+    alert('Error saving formula');
+    console.error('Save formula error:', err);
+  }
+}
+
+/* Show login forms */
+function showUserLogin(){ document.getElementById('userLoginCard').style.display='block'; document.getElementById('loginCard').style.display='none'; }
+function showAdminLogin(){ document.getElementById('loginCard').style.display='block'; document.getElementById('userLoginCard').style.display='none'; }
+
+/* User login + password mgmt */
+async function userLogin(){
+  const flat=document.getElementById('userFlatSelect').value;
+  const pass=document.getElementById('userPass').value;
+  if(!flat||!pass){ alert('Flat and Password required!'); return; }
+  try{
+    const doc=await db.collection("users").doc(flat).get();
+    const savedPass=doc.exists?doc.data().password:`flat${flat}`;
+    if(pass===savedPass){
+      loggedInFlat=flat;
+      localStorage.setItem('loggedInFlat', flat); // Save session
+      document.getElementById('userLoginCard').style.display='none';
+      document.getElementById('residentCard').style.display='block';
+      document.getElementById('userLoginBtn').style.display='none';
+      document.getElementById('userLogoutBtn').style.display='inline-block';
+      document.getElementById('adminLoginBtn').style.display='none';
+      document.getElementById('userExpensesBox').innerHTML = '';
+      document.getElementById('userExpenseMonth').value = ''; // Optional: also reset dropdown
+   
+      renderResidentDues();
+    } else alert('Invalid Password');
+  }catch(err){ console.error(err); alert('Error checking password'); }
+}
+function userLogout(){ loggedInFlat=null; 
+localStorage.removeItem('loggedInFlat'); // Remove session
+document.getElementById('residentCard').style.display='none'; document.getElementById('userLoginBtn').style.display='inline-block'; document.getElementById('userLogoutBtn').style.display='none'; document.getElementById('adminLoginBtn').style.display='inline-block'; }
+async function changeUserPassword(){
+  const newPass=document.getElementById("newUserPass").value;
+  if(!loggedInFlat||!newPass){ alert("Enter new password!"); return; }
+  try{ await db.collection("users").doc(loggedInFlat).set({ password:newPass }); alert("Password updated!"); document.getElementById("newUserPass").value=""; }
+  catch(err){ console.error(err); alert("Error updating password"); }
+}
+async function populateUserExpenseMonths() {
+  const select = document.getElementById('userExpenseMonth');
+  select.innerHTML = '<option value="">-- Select Month --</option>';
+
+  // Get current year (e.g. 2025)
+  const year = new Date().getFullYear();
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  // Add all months of current year
+  for (const m of months) {
+    const value = `${m} ${year}`;
+    const opt = document.createElement('option');
+    opt.value = value;
+    opt.textContent = value;
+    select.appendChild(opt);
+  }
+}
+document.addEventListener("DOMContentLoaded", () => {
+  populateUserExpenseMonths();
+});
+
+// Show expenses for selected month
+async function showUserExpenses() {
+  const month = document.getElementById('userExpenseMonth').value;
+  const box = document.getElementById('userExpensesBox');
+  box.innerHTML = '<p class="muted">Please wait, loading data for the selected month...</p>'; // Show loading message
+  if (!month) {
+    box.innerHTML = '';
+    return;
+  }
+
+  try {
+    const snap = await db.collection('expenses').doc(month).collection('items').get();
+    if (snap.empty) {
+      box.innerHTML = '<p class="muted">No expenses found for this month.</p>';
+      return;
+    }
+
+    let html = `
+      <table style="width:100%;border-collapse:collapse">
+        <tr>
+          <th>Name</th><th>Description</th><th>Vendor</th><th>Amount</th><th>Date</th>
+        </tr>
+    `;
+    snap.forEach(doc => {
+      const e = doc.data();
+      html += `
+        <tr>
+          <td>${e.name || ''}</td>
+          <td>${e.desc || ''}</td>
+          <td>${e.vendor || ''}</td>
+          <td>₹${e.amount || 0}</td>
+          <td>${e.date || ''}</td>
+        </tr>
+      `;
+    });
+    html += '</table>';
+    box.innerHTML = html;
+  } catch (err) {
+    console.error("Error loading expenses:", err);
+    box.innerHTML = '<p class="muted">Error loading expenses.</p>';
+  }
+}
+
+// Attach listener after DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById('userExpenseMonth')
+    .addEventListener('change', showUserExpenses);
+
+  populateUserExpenseMonths();
+});
+
+/* Render resident dues */
+async function renderResidentDues(){
+  const wrap=document.getElementById('dueCard'); wrap.innerHTML='';
+  if(!loggedInFlat){ wrap.innerHTML='<p class="muted">Login required.</p>'; return; }
+  try{
+    const duesSnap=await db.collection('flats').doc(loggedInFlat).collection('dues').orderBy('created','asc').get();
+    if(duesSnap.empty){ wrap.innerHTML='<div class="success">✅ No Amount Pending</div>'; return; }
+    duesSnap.forEach(doc=>{
+      const d=doc.data(); const row=document.createElement('div'); row.className='due-item'; const descEsc=d.desc?d.desc.replace(/'/g,"\\'"):'';
+      let actionHtml="";
+      if(d.status==="paid"){ actionHtml=`<div class="success">✅ Paid on ${d.paidDate||""}</div>`; }
+      else{
+       actionHtml = `<div class="actions">
+  <a class="btn btn-small" href="upi://pay?pa=eleganceenclave@hdfcbank&am=${encodeURIComponent(d.amount)}&cu=INR&tn=${encodeURIComponent(d.desc)}">Pay Now</a>
+  <button class="btn btn-small" onclick="markPaid('${loggedInFlat}','${doc.id}',${d.amount},'${descEsc}')">Mark as Paid</button>
+  <div class="muted" style="margin-top:4px;">(Pay Now works on Mobile/Tab with payment apps. Please use such a device.)</div>
+</div>`;
+      }
+      row.innerHTML=`<div><div class="due-title">${d.desc}</div><div class="muted">₹${d.amount}</div></div>${actionHtml}`;
+      wrap.appendChild(row);
+      
+    });
+   
+  }catch(err){ console.error('renderResidentDues error',err); wrap.innerHTML='<p class="muted">Error loading dues.</p>'; }
+
+     await populateUserExpenseMonths();
+}
+async function markPaid(flat,id,amount,desc){
+  try{
+    await db.collection('flats').doc(flat).collection('dues').doc(id).update({status:"paid",paidDate:new Date().toLocaleString() });
+    // add to payments collection
+    await db.collection('payments').add({ flat, desc, amount, date: new Date().toLocaleString() });
+    renderResidentDues();
+    refreshAdminTables();
+  }catch(err){
+    console.error('markPaid error',err);
+    alert('Error marking paid.');
+  }
+}
+
+/* Admin login + password mgmt */
+async function adminLogin(){
+  const user = document.getElementById('adminUser').value;
+  const pass = document.getElementById('adminPass').value;
+  if(user !== "admin"){ alert("Invalid Username"); return; }
+  try{
+    const doc = await db.collection("users").doc("admin").get();
+    const savedPass = doc.exists ? doc.data().password : "admin123";
+    if(pass === savedPass){
+      localStorage.setItem('adminLoggedIn', 'true'); // Save session
+      document.getElementById('loginCard').style.display='none';
+      document.getElementById('adminPanel').style.display='block';
+      document.getElementById('adminLoginBtn').style.display='none';
+      document.getElementById('adminLogoutBtn').style.display='inline-block';
+      document.getElementById('userLoginBtn').style.display='none';
+      await refreshAdminTables();
+    } else alert('Invalid Admin Credentials');
+  }catch(err){ console.error(err); alert('Error checking admin password'); }
+}
+
+function adminLogout(){
+  localStorage.removeItem('adminLoggedIn'); // Remove session
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('adminLoginBtn').style.display='inline-block';
+  document.getElementById('adminLogoutBtn').style.display='none';
+  document.getElementById('userLoginBtn').style.display='inline-block';
+}
+
+async function changeAdminPassword(){
+  const newPass = document.getElementById("newAdminPass").value;
+  if(!newPass){ alert("Enter new admin password!"); return; }
+  try{
+    await db.collection("users").doc("admin").set({ password: newPass });
+    alert("Admin password updated!");
+    document.getElementById("newAdminPass").value="";
+  }catch(err){ console.error(err); alert("Error updating admin password"); }
+}
+
+/* Admin actions */
+async function updateFlatSize(){
+  const flat = document.getElementById('sizeFlat').value;
+  const size = parseInt(document.getElementById('flatSize').value);
+  if(flat && size > 0){
+    try{
+      await db.collection('flats').doc(flat).set({ size }, { merge: true });
+      alert(`Updated ${flat} to ${size} sqft`);
+      refreshAdminTables();
+    }catch(err){ console.error(err); alert('Error updating size'); }
+  } else alert('Select flat and enter valid size');
+}
+
+async function addCharge(){
+  const flat = document.getElementById('adminFlat').value;
+  const desc = document.getElementById('chargeName').value.trim();
+  const amt = parseInt(document.getElementById('chargeAmount').value);
+  if(flat && desc && amt > 0){
+    try{
+      await db.collection('flats').doc(flat).collection('dues').add({ desc, amount: amt, created: Date.now(), status: "unpaid" });
+      document.getElementById('chargeName').value = '';
+      document.getElementById('chargeAmount').value = '';
+      refreshAdminTables();
+    }catch(err){ console.error(err); alert('Error adding charge'); }
+  } else alert('Fill flat, description and amount');
+}
+
+async function adminMarkPaid(flat, id, amount, desc){
+  try{
+    await db.collection('flats').doc(flat).collection('dues').doc(id).update({ status: "paid", paidDate: new Date().toLocaleString() });
+    await db.collection('payments').add({ flat, desc, amount, date: new Date().toLocaleString() });
+    refreshAdminTables();
+  }catch(err){ console.error('adminMarkPaid error',err); alert('Error marking paid'); }
+}
+
+/* Refresh admin tables with filter (unpaid / paid / all) */
+async function refreshAdminTables(){
+  const pBody = document.querySelector('#pendingTable tbody'); pBody.innerHTML = '';
+  let totalPending = 0;
+  const flats = allFlats();
+
+  // read filter
+  const filter = document.getElementById('filterDues') ? document.getElementById('filterDues').value : 'unpaid';
+
+  // Fetch all flat sizes first (so history can show sqft)
+  const flatSizes = {};
+  const sizePromises = flats.map(async flat => {
+    try{
+      const doc = await db.collection('flats').doc(flat).get();
+      flatSizes[flat] = doc.exists && doc.data().size ? doc.data().size : '';
+    }catch(err){ flatSizes[flat] = ''; }
+  });
+  await Promise.all(sizePromises);
+
+  // Pending dues / all dues based on filter
+  for (const f of flats) {
+    try {
+      const duesSnap = await db.collection('flats').doc(f).collection('dues').orderBy('created', 'asc').get();
+      if (!duesSnap.empty) {
+        duesSnap.forEach(doc => {
+          const d = doc.data();
+          const status = d.status || 'unpaid';
+          // decide if this row should appear given filter
+          if(filter === 'unpaid' && status === 'paid') return;
+          if(filter === 'paid' && status !== 'paid') return;
+          // accumulate pending only for unpaid entries
+          if(status !== 'paid') totalPending += Number(d.amount) || 0;
+          const descEsc = (d.desc || '').replace(/'/g, "\\'");
+          let actionCell = '';
+          if(status === 'paid'){
+            actionCell = `Paid on ${d.paidDate || ''}`;
+          } else {
+            actionCell = `<button class="btn btn-small" onclick="adminMarkPaid('${f}','${doc.id}',${d.amount},'${descEsc}')">Mark Paid</button>
+            <button class="btn btn-small btn-danger" onclick="adminDeleteDue('${f}','${doc.id}')">Delete</button>`;
+          }
+          pBody.innerHTML += `<tr>
+            <td>${f}</td>
+            <td>${flatSizes[f] || ''}</td>
+            <td>${d.desc}</td>
+            <td>${d.amount}</td>
+            <td>${actionCell}</td>
+          </tr>`;
+        });
+      }
+    } catch (err) { console.error('Error reading dues for', f, err); }
+  }
+
+  // Payments history
+  const hBody = document.querySelector('#historyTable tbody'); hBody.innerHTML = '';
+  let totalCollected = 0;
+  try {
+    const paymentsSnap = await db.collection('payments').orderBy('date', 'desc').get();
+    paymentsSnap.forEach(doc => {
+      const h = doc.data();
+      totalCollected += Number(h.amount) || 0;
+      hBody.innerHTML += `<tr>
+        <td>${h.flat}</td>
+        <td>${flatSizes[h.flat] || ''}</td>
+        <td>${h.desc}</td>
+        <td>${h.amount}</td>
+        <td>${h.date}</td>
+      </tr>`;
+    });
+  } catch (err) { console.error('Error reading payments', err); }
+
+  document.getElementById('summaryBar').innerHTML = `<div>Total Pending: ₹${totalPending}</div><div>Total Collected: ₹${totalCollected}</div>`;
+
+  await renderExpensesTable();
+await refreshExpenseSelect();
+}
+async function addExpense() {
+  const name = document.getElementById('expenseName').value.trim();
+  const desc = document.getElementById('expenseDesc').value.trim();
+  const vendor = document.getElementById('expenseVendor').value.trim();
+  const amount = Number(document.getElementById('expenseAmount').value);
+  if(!name || !desc || !vendor || !amount || amount <= 0) { alert('Please fill all fields with valid amount'); return; }
+  try {
+    const tag = currentMonthYear();
+    await db.collection('expenses').doc(tag)
+      .collection('items').add({
+        name, desc, vendor, amount,
+        date: new Date().toLocaleString()
+      });
+    document.getElementById('expenseName').value = '';
+    document.getElementById('expenseDesc').value = '';
+    document.getElementById('expenseVendor').value = '';
+    document.getElementById('expenseAmount').value = '';
+    document.getElementById('expenseSuccess').style.display = 'block';
+    setTimeout(()=>{document.getElementById('expenseSuccess').style.display='none';}, 1600);
+    await renderExpensesTable(); // Refresh table
+    await refreshExpenseSelect();
+  } catch(err) {
+    console.error('Expense add error', err);
+    alert('Error adding expense');
+  }
+}
+
+async function renderExpensesTable() {
+  document.getElementById('expensesTableHeader').textContent = currentMonthYear() + ' Expenses Table';
+  const tag = currentMonthYear();
+  const tbody = document.querySelector('#expensesTable tbody');
+  tbody.innerHTML = '';
+  let total = 0;
+  try {
+    const snap = await db.collection('expenses').doc(tag)
+      .collection('items').orderBy('date','asc').get();
+    snap.forEach(doc => {
+      const e = doc.data();
+      total += Number(e.amount) || 0;
+      tbody.innerHTML += `<tr>
+        <td>${e.name}</td>
+        <td>${e.desc}</td>
+        <td>${e.vendor}</td>
+        <td>₹${e.amount}</td>
+        <td>${e.date}</td>
+      </tr>`;
+    });
+    // Show total below table
+    tbody.innerHTML += `<tr>
+      <td colspan="3" style="text-align:right;font-weight:600;">Total</td>
+      <td style="font-weight:700;">₹${total}</td>
+      <td></td>
+    </tr>`;
+  } catch(err) {
+    tbody.innerHTML = '<tr><td colspan="5">Error loading expenses</td></tr>';
+  }
+}
+// Populate expense select on table render
+async function refreshExpenseSelect() {
+  const select = document.getElementById('expenseSelect');
+  select.innerHTML = '<option value="">-- Select Expense --</option>' +
+                     '<option value="__total__">Total (All Expenses)</option>';
+  const tag = currentMonthYear();
+  try {
+    const snap = await db.collection('expenses').doc(tag).collection('items').orderBy('date','asc').get();
+    snap.forEach(doc => {
+      const e = doc.data();
+      select.innerHTML += `<option value="${doc.id}">${e.name} (${e.amount})</option>`;
+    });
+  } catch {}
+}
+
+
+
+function showGroupDivide() {
+  document.getElementById('groupDivideBox').style.display = 'block';
+}
+async function adminDeleteDue(flat, dueId) {
+  if(!confirm("Are you sure you want to delete this due? This cannot be undone.")) return;
+  try {
+    await db.collection('flats').doc(flat).collection('dues').doc(dueId).delete();
+    await refreshAdminTables();
+    alert('Due deleted!');
+    document.getElementById('expenseDistSuccess').textContent = '✅ Due deleted!';
+    document.getElementById('expenseDistSuccess').style.display = 'block';
+    setTimeout(()=>{document.getElementById('expenseDistSuccess').style.display='none';}, 1600);
+  } catch(err) {
+    console.error('Error deleting due', err);
+    alert('Error deleting due');
+  }
+}
+
+async function distributeExpense(type) {
+  const tag = currentMonthYear();
+  const expenseId = document.getElementById('expenseSelect').value;
+  if(!expenseId) { alert('Select expense'); return; }
+  const isTotal = (expenseId === "__total__");
+ let expense = {};
+if (isTotal) {
+  const snap = await db.collection('expenses').doc(tag).collection('items').orderBy('date','asc').get();
+  expense.amount = 0;
+  expense.desc = "";
+  expense.name = "Monthly Expenses";
+  const descArr = [];
+  snap.forEach(doc => {
+    const e = doc.data();
+    expense.amount += Number(e.amount) || 0;
+    descArr.push(`${e.name}: ₹${e.amount}`);
+  });
+  expense.desc = descArr.join(', ');
+} else {
+  const expenseSnap = await db.collection('expenses').doc(tag).collection('items').doc(expenseId).get();
+  if(!expenseSnap.exists) { alert('Expense not found'); return; }
+  expense = expenseSnap.data();
+}
+  const flats = allFlats();
+  let added = 0;
+
+  if(type === 'equal') {
+    const perFlat = Math.round(Number(expense.amount) / flats.length);
+    for(const flat of flats) {
+      await db.collection('flats').doc(flat).collection('dues').add({
+        desc: expense.name + ' — ' + expense.desc,
+        amount: perFlat,
+        created: Date.now(),
+        status: "unpaid"
+      });
+      added++;
+    }
+  } else if(type === 'sqft') {
+    // Get total sqft
+    let totalSqft = 0;
+    const flatSizes = {};
+    for(const flat of flats) {
+      const doc = await db.collection('flats').doc(flat).get();
+      const size = doc.exists && doc.data().size ? doc.data().size : 1000;
+      flatSizes[flat] = size;
+      totalSqft += size;
+    }
+    for(const flat of flats) {
+      const share = Math.round(Number(expense.amount) * flatSizes[flat] / totalSqft);
+      await db.collection('flats').doc(flat).collection('dues').add({
+        desc: expense.name + ' — ' + expense.desc,
+        amount: share,
+        created: Date.now(),
+        status: "unpaid"
+      });
+      added++;
+    }
+  } else if(type === 'group') {
+    // Get amounts for each group
+    const amt999 = Number(document.getElementById('groupAmt999').value);
+    const amt690 = Number(document.getElementById('groupAmt690').value);
+    const amt1026 = Number(document.getElementById('groupAmt1026').value);
+    const amt918 = Number(document.getElementById('groupAmt918').value);
+    const amt1098 = Number(document.getElementById('groupAmt1098').value);
+    const amt1089 = Number(document.getElementById('groupAmt1089').value);
+    const amt1359 = Number(document.getElementById('groupAmt1359').value);
+    if(!amt999 && !amt690 && !amt1026 && !amt918 && !amt1098 && !amt1089 && !amt1359) { 
+      alert('Enter at least one group amount'); return; 
+    }
+    for(const flat of flats) {
+      const doc = await db.collection('flats').doc(flat).get();
+      const size = doc.exists && doc.data().size ? doc.data().size : 1000;
+      let amt = 0;
+      if(size == 999) amt = amt999;
+      else if(size == 690) amt = amt690;
+      else if(size == 1026) amt = amt1026;
+      else if(size == 918) amt = amt918;
+      else if(size == 1098) amt = amt1098;
+      else if(size == 1089) amt = amt1089;
+      else if(size == 1359) amt = amt1359;
+      else continue; // skip flats not in any group
+      if(amt > 0) {
+        await db.collection('flats').doc(flat).collection('dues').add({
+          desc: expense.name + ' — ' + expense.desc,
+          amount: amt,
+          created: Date.now(),
+          status: "unpaid"
+        });
+        added++;
+      }
+    }
+    document.getElementById('groupDivideBox').style.display = 'none';
+  }
+  document.getElementById('expenseDistSuccess').style.display = 'block';
+  setTimeout(()=>{document.getElementById('expenseDistSuccess').style.display = 'none';}, 1600);
+  await refreshAdminTables();
+}
+
+
+/* Init: populate selects, generate this month, refresh tables */
+(async function init(){
+  try{
+    const userSel = document.getElementById('userFlatSelect');
+    const sizeSel = document.getElementById('sizeFlat');
+    const adminSel = document.getElementById('adminFlat');
+    allFlats().forEach(f=>{
+      [userSel, sizeSel, adminSel].forEach(sel=>{
+        const opt = document.createElement('option');
+        opt.value = f; opt.textContent = f;
+        sel.appendChild(opt);
+      });
+    });
+    // ensure monthly dues exist (will not duplicate paid/unpaid if desc exists)
+    await generateThisMonthMaintenance();
+    await refreshAdminTables();
+    try {
+    const formulaDoc = await db.collection('settings').doc('maintenanceFormula').get();
+    if (formulaDoc.exists && formulaDoc.data().formula) {
+      document.getElementById('maintenanceFormula').value = formulaDoc.data().formula;
+    }
+  } catch (err) {}
+} catch(err){
+    console.error('Init error',err);
+  }
+})();
+function toggleDeleteButtons() {
+  const enabled = document.getElementById('enableDeleteToggle').checked;
+  document.getElementById('deleteWarning').style.display = enabled ? 'block' : 'none';
+  document.getElementById('deleteDuesBtn').disabled = !enabled;
+  document.getElementById('deleteExpensesBtn').disabled = !enabled;
+  document.getElementById('deletePaymentsBtn').disabled = !enabled;
+}
+async function deleteAllDues() {
+  if(!confirm("Delete ALL unpaid dues for ALL flats? This cannot be undone!")) return;
+  const flats = allFlats();
+  try {
+    for(const flat of flats) {
+      const snap = await db.collection('flats').doc(flat).collection('dues').where('status', '!=', 'paid').get();
+      const batch = db.batch();
+      snap.forEach(doc => batch.delete(doc.ref));
+      await batch.commit();
+    }
+    alert('All unpaid dues deleted!');
+    await refreshAdminTables();
+  } catch(err) {
+    console.error('Error deleting unpaid dues', err);
+    alert('Error deleting unpaid dues');
+  }
+}
+
+async function deleteAllExpenses() {
+  if(!confirm("Delete ALL monthly expenses for THIS month? This cannot be undone!")) return;
+  const tag = currentMonthYear();
+  try {
+    const snap = await db.collection('expenses').doc(tag).collection('items').get();
+    const batch = db.batch();
+    snap.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+    alert('All expenses deleted!');
+    await refreshAdminTables();
+  } catch(err) {
+    console.error('Error deleting all expenses', err);
+    alert('Error deleting all expenses');
+  }
+}
+
+async function deleteAllPayments() {
+  if(!confirm("Delete ALL payment history? This cannot be undone!")) return;
+  try {
+    const snap = await db.collection('payments').get();
+    const batch = db.batch();
+    snap.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+    alert('All payment history deleted!');
+    await refreshAdminTables();
+  } catch(err) {
+    console.error('Error deleting payments', err);
+    alert('Error deleting payment history');
+  }
+}
+window.onload = function() {
+  document.getElementById('deleteDuesBtn').disabled = true;
+  document.getElementById('deleteExpensesBtn').disabled = true;
+  document.getElementById('deletePaymentsBtn').disabled = true;
+};
+ document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+</script>
+<div style="
+  position: fixed;
+  bottom: 8px;
+  right: 18px;
+  font-size: 12px;
+  color: #2563eb;
+  opacity: 0.35;
+  background: transparent;
+  pointer-events: none;
+  font-family: 'Poppins', Arial, sans-serif;
+">
+  v2025.1.0.2
+</div>
+</body>
+</html>
