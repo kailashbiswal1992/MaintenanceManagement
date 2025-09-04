@@ -343,6 +343,7 @@ button:disabled {
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 <script>
   // Restore session if available
 const savedFlat = localStorage.getItem('loggedInFlat');
@@ -367,8 +368,6 @@ const adminLoggedIn = localStorage.getItem('adminLoggedIn');
   }
 })();
 /* Firebase init */
-const firebaseConfig = { apiKey: "AIzaSyDykGxIq2GUDxFkv28NLmdRmiQzlEjvFuw", authDomain: "rento-56bca.firebaseapp.com", projectId: "rento-56bca", storageBucket: "rento-56bca.appspot.com", messagingSenderId: "641174222477", appId: "1:641174222477:web:0c6c5999787c2ca05d14c4", measurementId: "G-T3CSB1Z271" };
-firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 let loggedInFlat = null;
 
@@ -1013,7 +1012,7 @@ window.onload = function() {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.2
+  v2025.1.0.3
 </div>
 </body>
 </html>
