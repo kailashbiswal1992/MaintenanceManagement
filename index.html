@@ -18,8 +18,26 @@
       --shadow: 0 6px 18px rgba(37,99,235,0.08);
       --header-shadow: 0 4px 14px rgba(37,99,235,0.18);
       --font: 'Poppins', Arial, sans-serif;
+      --admin-section-bg: #f6f8fc;
+      --admin-section-title-bg: #e0e7ff;
+      --admin-section-title-color: #2563eb;
+      /* For dark mode */
+      --bg-dark: #101521;
+      --primary-darkmode: #60a5fa;
+      --card-bg-dark: #1e293b;
+      --admin-section-bg-dark: #1e273a;
+      --admin-section-title-bg-dark: #23304a;
+      --admin-section-title-color-dark: #60a5fa;
+      --text-dark: #e0e7ff;
     }
-    body { font-family: var(--font); background: linear-gradient(120deg, #e0e7ff 0%, #f3f6fa 100%); margin: 0; }
+    /* Light mode (default) */
+    body {
+      font-family: var(--font);
+      background: linear-gradient(120deg, #e0e7ff 0%, #f3f6fa 100%);
+      margin: 0;
+      color: #222;
+      transition: background 0.3s, color 0.3s;
+    }
     header {
       background: linear-gradient(90deg, var(--primary-dark) 60%, var(--primary) 100%);
       color: #fff; padding: 22px 24px; font-size: 1.7rem;
@@ -36,7 +54,6 @@
     .btn-small { padding: 7px 10px; font-size: 13px; }
     .container { width: 97%; max-width: 1100px; margin: 30px auto; background: rgba(255,255,255,0.93); border-radius: var(--card-radius); box-shadow: var(--shadow); padding: 30px 22px; }
     .grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
-    /*@media(min-width:900px) { .grid { grid-template-columns:1fr 1fr; } }*/
     .card { background: #fff; border-radius: var(--card-radius); padding: 18px; box-shadow: var(--shadow); }
     h2, h3 { color: var(--primary); margin: 0 0 15px; font-family: var(--font); font-weight: 600; }
     select, input[type="text"], input[type="password"], input[type="number"] {
@@ -46,8 +63,8 @@
     }
     select:focus, input:focus { border-color: #2563eb; }
     select, option {
-  background-color: #ffffff !important;
-  color: #000000 !important;
+      background-color: #ffffff !important;
+      color: #000000 !important;
     }
     label { font-weight: 500; margin-top: 14px; margin-bottom: 0px; display: block; color: #2563eb; font-size: 15px; }
     .due-item { background: linear-gradient(90deg, #e0e7ff 60%, #f3f6fa 100%); padding: 12px; margin: 8px 0; border-left: 7px solid var(--accent-2); display: flex; justify-content: space-between; align-items: center; gap: 12px; border-radius: 12px; box-shadow: 0 2px 6px rgba(37,99,235,0.05); }
@@ -60,99 +77,220 @@
     th { background: #e0e7ff; color: var(--primary); font-weight: 700; }
     .summary { display: flex; gap: 23px; margin-bottom: 16px; }
     .summary div { background: #e0e7ff; padding: 10px 14px; border-radius: 12px; font-weight: 600; color: var(--primary); }
-    @media (max-width: 700px) { header { font-size: 1.05rem; padding: 14px 8px; } .header-logo { width: 36px; height: 36px;} .container { padding: 12px 5px;} .card { padding: 11px; } h2, h3 { font-size: 1rem; } }
-  .table-responsive {
-  width: 100%;
-  overflow-x: auto;
-}
-
-@media (max-width: 600px) {
-  body { font-size: 15px; }
-  .container {
-    width: 100%;
-    padding: 6px 2px;
-    margin: 10px auto;
-  }
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  .brand span {
-    font-size: 1em;
-  }
-  .header-logo {
-    width: 32px;
-    height: 32px;
-  }
-  .card {
-    padding: 8px;
-  }
-  .btn, .btn-small {
-    width: 100%;
-    margin: 8px 0 0 0;
-    min-height: 40px;
-  }
-  table, th, td {
-    font-size: 12px;
-    padding: 3px 2px;
-  }
-  h2, h3 {
-    font-size: 1.05rem;
-  }
-  .summary {
-    flex-direction: column;
-    gap: 6px;
-  }
-}
-.btn:disabled,
-.btn[disabled],
-button:disabled {
-  background: #d1d5db !important; /* Tailwind slate-300 */
-  color: #888 !important;
-  cursor: not-allowed !important;
-  border: none !important;
-  box-shadow: none !important;
-  opacity: 1 !important;
-}
-.tooltip {
-  position: relative;
-  display: inline-block;
+    /* New admin panel section styling */
+    .admin-section {
+      margin-bottom: 28px;
+      padding: 18px 14px 14px 14px;
+      background: var(--admin-section-bg);
+      border-radius: 10px;
+      box-shadow: 0 1px 8px rgba(37,99,235,0.07);
+      border-bottom: 1px solid #e0e7ff;
+    }
+    .admin-section:last-child {
+      border-bottom: none;
+    }
+    .admin-section h3, .admin-section h4 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      background: var(--admin-section-title-bg);
+      color: var(--admin-section-title-color);
+      border-radius: 7px;
+      padding: 7px 10px 7px 10px;
+      font-weight: 600;
+      font-size: 1.14em;
+      box-shadow: 0 1px 4px rgba(37,99,235,0.05);
+    }
+    .admin-section input, .admin-section select {
+      margin-bottom: 13px;
+    }
+    .admin-form-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .admin-form-row input,
+    .admin-form-row select {
+      flex: 1 1 170px;
+    }
+    .admin-section .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    /* Dark mode styles */
+    body.dark-mode {
+      background: linear-gradient(120deg, var(--bg-dark) 0%, var(--card-bg-dark) 100%);
+      color: var(--text-dark);
+    }
+    body.dark-mode .container {
+      background: var(--card-bg-dark);
+      color: var(--text-dark);
+    }
+    body.dark-mode .card {
+      background: var(--card-bg-dark);
+      color: var(--text-dark);
+    }
+    body.dark-mode h2, body.dark-mode h3, body.dark-mode h4 {
+      color: var(--admin-section-title-color-dark);
+    }
+    body.dark-mode .admin-section {
+      background: var(--admin-section-bg-dark);
+      border-bottom: 1px solid var(--admin-section-title-bg-dark);
+    }
+    body.dark-mode .admin-section h3, body.dark-mode .admin-section h4 {
+      background: var(--admin-section-title-bg-dark);
+      color: var(--admin-section-title-color-dark);
+    }
+    body.dark-mode select, body.dark-mode input[type="text"], body.dark-mode input[type="password"], body.dark-mode input[type="number"] {
+      background: #23304a;
+      color: #e0e7ff;
+      border: 1.5px solid #3b82f6;
+    }
+    body.dark-mode label { color: var(--admin-section-title-color-dark); }
+    body.dark-mode .btn {
+      background: linear-gradient(135deg, var(--primary-darkmode) 60%, var(--accent) 100%);
+      color: #fff;
+    }
+    body.dark-mode .btn-danger {
+      background: linear-gradient(135deg, var(--danger) 60%, #991b1b 100%);
+    }
+    body.dark-mode table, body.dark-mode th, body.dark-mode td {
+      background: var(--card-bg-dark);
+      color: var(--text-dark);
+      border-color: #23304a;
+    }
+    body.dark-mode th {
+      background: var(--admin-section-title-bg-dark);
+      color: var(--admin-section-title-color-dark);
+    }
+    body.dark-mode .summary div {
+      background: var(--admin-section-title-bg-dark);
+      color: var(--admin-section-title-color-dark);
+    }
+    /* Responsive */
+    @media (max-width: 700px) {
+      header { font-size: 1.05rem; padding: 14px 8px; }
+      .header-logo { width: 36px; height: 36px;}
+      .container { padding: 12px 5px;}
+      .card { padding: 11px; }
+      h2, h3 { font-size: 1rem; }
+    }
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 15px; }
+      .container {
+        width: 100%;
+        padding: 6px 2px;
+        margin: 10px auto;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .brand span {
+        font-size: 1em;
+      }
+      .header-logo {
+        width: 32px;
+        height: 32px;
+      }
+      .card {
+        padding: 8px;
+      }
+      .btn, .btn-small {
+        width: 100%;
+        margin: 8px 0 0 0;
+        min-height: 40px;
+      }
+      table, th, td {
+        font-size: 12px;
+        padding: 3px 2px;
+      }
+      h2, h3 {
+        font-size: 1.05rem;
+      }
+      .summary {
+        flex-direction: column;
+        gap: 6px;
+      }
+    }
+    .btn:disabled,
+    .btn[disabled],
+    button:disabled {
+      background: #d1d5db !important;
+      color: #888 !important;
+      cursor: not-allowed !important;
+      border: none !important;
+      box-shadow: none !important;
+      opacity: 1 !important;
+    }
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      margin-left: 8px;
+      z-index: 100;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      max-width: 90vw;
+      width: 290px;
+      background-color: #2563eb;
+      color: #fff;
+      text-align: left;
+      border-radius: 8px;
+      padding: 9px 14px;
+      position: absolute;
+      z-index: 200;
+      left: 50%;
+      bottom: 120%;
+      transform: translateX(-50%);
+      font-size: 15px;
+      box-shadow: 0 2px 12px rgba(30,58,138,0.13);
+      opacity: 0;
+      transition: opacity 0.25s;
+      overflow-wrap: break-word;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+    @media (max-width: 600px) {
+      .tooltip .tooltiptext {
+        width: 95vw;
+        left: 0;
+        transform: none;
+        bottom: 130%;
+      }
+    }
+    /* Dark mode toggle button */
+   .toggle-mode-btn {
+  background: #fff;
+  color: var(--primary-dark);
+  border: 1.5px solid var(--primary);
+  border-radius: 999px;        /* Oval shape */
+  padding: 8px 28px;           /* More horizontal padding for oval look */
   cursor: pointer;
-  margin-left: 8px;
-  /* Make sure parent containers don't crop it */
-  z-index: 100;
-}
-.tooltip .tooltiptext {
-  visibility: hidden;
-  max-width: 90vw; /* responsive for small screens */
-  width: 290px;
-  background-color: #2563eb;
-  color: #fff;
-  text-align: left;
-  border-radius: 8px;
-  padding: 9px 14px;
-  position: absolute;
-  z-index: 200;
-  left: 50%;
-  bottom: 120%; /* Always above */
-  transform: translateX(-50%);
   font-size: 15px;
-  box-shadow: 0 2px 12px rgba(30,58,138,0.13);
-  opacity: 0;
-  transition: opacity 0.25s;
-  overflow-wrap: break-word;
+  margin-left: 10px;
+  font-family: var(--font);
+  transition: background 0.3s, color 0.3s;
 }
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+body.dark-mode .toggle-mode-btn {
+  background: var(--card-bg-dark);
+  color: var(--admin-section-title-color-dark);
+  border-color: var(--admin-section-title-color-dark);
 }
-@media (max-width: 600px) {
-  .tooltip .tooltiptext {
-    width: 95vw;
-    left: 0;
-    transform: none;
-    bottom: 130%;
-  }
+    .login-bar {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 16px 0 0 0;
 }
   </style>
 </head>
@@ -165,14 +303,25 @@ button:disabled {
     <span>Apartment Maintenance</span>
   </div>
   <div>
-    <button class="btn" id="userLoginBtn" onclick="showUserLogin()">User Login</button>
-    <button class="btn btn-danger" id="userLogoutBtn" style="display:none" onclick="userLogout()">Logout</button>
-    <button class="btn" id="adminLoginBtn" onclick="showAdminLogin()">Admin Login</button>
-    <button class="btn btn-danger" id="adminLogoutBtn" style="display:none" onclick="adminLogout()">Logout</button>
+    <button class="toggle-mode-btn" id="toggleModeBtn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    <!--<button class="btn" id="userLoginBtn" onclick="showUserLogin()">User Login</button>-->
+    <!--<button class="btn btn-danger" id="userLogoutBtn" style="display:none" onclick="userLogout()">Logout</button>-->
+    <!--<button class="btn" id="adminLoginBtn" onclick="showAdminLogin()">Admin Login</button>-->
+    <!--<button class="btn btn-danger" id="adminLogoutBtn" style="display:none" onclick="adminLogout()">Logout</button>-->
   </div>
 </header>
-
-<div class="container">
+<div class="login-bar" style="
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 16px 0 0 0;
+">
+  <button class="btn" id="userLoginBtn" onclick="showUserLogin()">User Login</button>
+  <button class="btn btn-danger" id="userLogoutBtn" style="display:none" onclick="userLogout()">Logout</button>
+  <button class="btn" id="adminLoginBtn" onclick="showAdminLogin()">Admin Login</button>
+  <button class="btn btn-danger" id="adminLogoutBtn" style="display:none" onclick="adminLogout()">Logout</button>
+</div>
+<div class="container" id="mainContainer" style="display:none;">
   <div class="grid">
     <!-- User Login -->
     <div class="card" id="userLoginCard" style="display:none">
@@ -189,15 +338,17 @@ button:disabled {
     <div class="card" id="residentCard" style="display:none">
       <h2>Resident — Dues</h2>
       <div id="dueCard"></div>
-      
-      <h3>View Monthly Expenses</h3>
-<label for="userExpenseMonth">Select Month & Year</label>
-<select id="userExpenseMonth"></select>
-<div id="userExpensesBox"></div>
-
-      <h3>Change Password</h3>
-      <input type="password" id="newUserPass" placeholder="Enter New Password"/>
-      <button class="btn" onclick="changeUserPassword()">Update Password</button>
+      <div class="admin-section">
+        <h3>View Monthly Expenses</h3>
+        <label for="userExpenseMonth">Select Month & Year</label>
+        <select id="userExpenseMonth"></select>
+        <div id="userExpensesBox"></div>
+      </div>
+      <div class="admin-section">
+        <h3>Change Password</h3>
+        <input type="password" id="newUserPass" placeholder="Enter New Password"/>
+        <button class="btn" onclick="changeUserPassword()">Update Password</button>
+      </div>
     </div>
 
     <!-- Admin Login -->
@@ -212,139 +363,151 @@ button:disabled {
 
     <!-- Admin Panel -->
     <div class="card" id="adminPanel" style="display:none">
-  <h2>Admin Panel</h2>
+      <h2>Admin Panel</h2>
       <div class="summary" id="summaryBar"><div>Total Pending: ₹0</div><div>Total Collected: ₹0</div></div>
-<h3>Monthly Expenses</h3>
-<div>
-  <input type="text" id="expenseName" placeholder="Expense Name"/>
-  <input type="text" id="expenseDesc" placeholder="Description"/>
-  <input type="text" id="expenseVendor" placeholder="Fulfilled by Vendor"/>
-  <input type="number" id="expenseAmount" placeholder="Amount (₹)" min="0"/>
-  <button class="btn" onclick="addExpense()">Add Expense</button>
-  <p id="expenseSuccess" class="success" style="display:none;">✅ Expense added!</p>
-</div>
-<h4 id="expensesTableHeader" style="margin-bottom:6px;color:#2563eb"></h4>
-<div class="table-responsive">
-  <table id="expensesTable">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Vendor</th>
-        <th>Amount</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
-<br>
-<h3>Maintenance Calculation Formula</h3>
-<span class="tooltip">
- <span style="display: inline-flex; align-items: center;">
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    style="vertical-align: middle; margin-right: 3px;">
-    <circle cx="10" cy="10" r="9" stroke="#2563eb" stroke-width="2" fill="#fff"/>
-    <rect x="9" y="8" width="2" height="6" rx="1" fill="#2563eb"/>
-    <rect x="9" y="5" width="2" height="2" rx="1" fill="#2563eb"/>
-  </svg>
-  <span style="color:#2563eb;font-weight:500;cursor:pointer;">Info</span>
-</span>
-  <span class="tooltiptext">
-    Monthly Maintenance calculates automatically every month 1st based on the formula provided below.<br>
-    If you wish to update the formula, please do so <b>before 1st of the month</b>.
-  </span>
-</span>
-<label for="maintenanceFormula">Enter formula (use <b>sqft</b> as variable):</label>
-<input type="text" id="maintenanceFormula" placeholder="e.g. (sqft * 2) + 800" value="(sqft * 2) + 800" />
-<button class="btn" onclick="saveFormula()">Save Formula</button>
-<p id="formulaSavedMsg" class="success" style="display:none;">✅ Formula saved!</p>
-<br>
-<h3>Distribute Monthly Expense as Dues</h3>
-<div>
-  <select id="expenseSelect"><option value="">-- Select Expense --</option></select>
-  <button class="btn" onclick="distributeExpense('equal')">Divide Equally</button>
-  <button class="btn" onclick="distributeExpense('sqft')">Divide by Sqft</button>
-  <button class="btn" onclick="showGroupDivide()">Divide by Group</button>
- <div id="groupDivideBox" style="display:none; margin-top:10px;">
-  <label>Enter Amount for 999 sqft:</label>
-  <input type="number" id="groupAmt999" placeholder="Amount for 999 sqft"/>
-  <label>Enter Amount for 690 sqft:</label>
-  <input type="number" id="groupAmt690" placeholder="Amount for 690 sqft"/>
-  <label>Enter Amount for 1026 sqft:</label>
-  <input type="number" id="groupAmt1026" placeholder="Amount for 1026 sqft"/>
-  <label>Enter Amount for 918 sqft:</label>
-  <input type="number" id="groupAmt918" placeholder="Amount for 918 sqft"/>
-  <label>Enter Amount for 1098 sqft:</label>
-  <input type="number" id="groupAmt1098" placeholder="Amount for 1098 sqft"/>
-  <label>Enter Amount for 1089 sqft:</label>
-  <input type="number" id="groupAmt1089" placeholder="Amount for 1089 sqft"/>
-   <label>Enter Amount for 1359 sqft:</label>
-  <input type="number" id="groupAmt1359" placeholder="Amount for 1359 sqft"/>
-  <button class="btn" onclick="distributeExpense('group')">Apply Group Dues</button>
-</div>
-  <p id="expenseDistSuccess" class="success" style="display:none;">✅ Dues added to flats!</p>
-</div>
-<br>
-      <h3>Update Flat Size</h3>
-      <select id="sizeFlat"><option value="">-- Select Flat --</option></select>
-      <input type="number" id="flatSize" placeholder="Enter Sqft"/>
-      <button class="btn" onclick="updateFlatSize()">Save Size</button>
-<br>
-      <h3>Add Custom Charge</h3>
-      <select id="adminFlat"><option value="">-- Select Flat --</option></select>
-      <input type="text" id="chargeName" placeholder="Charge Description"/>
-      <input type="number" id="chargeAmount" placeholder="Amount (₹)"/>
-      <button class="btn" onclick="addCharge()">Add Charge</button>
-<br>
-      <h3>Pending Dues</h3>
-      <label>Show: </label>
-      <select id="filterDues" onchange="refreshAdminTables()">
-        <option value="unpaid">Only Unpaid</option>
-        <option value="paid">Only Paid</option>
-        <option value="all">All</option>
-      </select>
-<div class="table-responsive">
-      <table id="pendingTable">
-        <thead>
-          <tr><th>Flat</th><th>Sqft</th><th>Description</th><th>Amount</th><th>Status / Action</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-<br>
-      <h3>Payment History</h3>
-      <table id="historyTable">
-        <thead>
-          <tr><th>Flat</th><th>Sqft</th><th>Description</th><th>Amount</th><th>Date</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <br>
-       <h3>Change Admin Password</h3>
-      <input type="password" id="newAdminPass" placeholder="Enter New Admin Password"/>
-      <button class="btn" onclick="changeAdminPassword()">Update Admin Password</button>
-<br>
-      <div style="margin-top:16px;">
-        <div style="margin-top:16px;">
-  <label style="font-weight:600;">
-    <input type="checkbox" id="enableDeleteToggle" onchange="toggleDeleteButtons()" style="accent-color:#ef4444;"/>
-    Enable Delete Actions
-  </label>
-  <div id="deleteWarning" style="display:none;color:#ef4444;font-weight:600;margin-bottom:10px;">
-    ⚠️ Warning: Deleting data is irreversible. Proceed with caution!
-  </div>
- <button class="btn btn-danger" id="deleteDuesBtn" onclick="deleteAllDues()" disabled>Delete All Dues</button>
-<button class="btn btn-danger" id="deleteExpensesBtn" onclick="deleteAllExpenses()" disabled>Delete All Expenses (This Month)</button>
-<button class="btn btn-danger" id="deletePaymentsBtn" onclick="deleteAllPayments()" disabled>Delete All Payment History</button>
-</div>
-  <br>
-  <br>
-       </div>
+      <div class="admin-section">
+        <h3>Monthly Expenses</h3>
+        <div class="admin-form-row">
+          <input type="text" id="expenseName" placeholder="Expense Name"/>
+          <input type="text" id="expenseDesc" placeholder="Description"/>
+          <input type="text" id="expenseVendor" placeholder="Fulfilled by Vendor"/>
+          <input type="number" id="expenseAmount" placeholder="Amount (₹)" min="0"/>
+        </div>
+        <button class="btn" onclick="addExpense()">Add Expense</button>
+        <p id="expenseSuccess" class="success" style="display:none;">✅ Expense added!</p>
+        <h4 id="expensesTableHeader" style="margin-bottom:6px;color:#2563eb"></h4>
+        <div class="table-responsive">
+          <table id="expensesTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Vendor</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="admin-section">
+        <h3>Maintenance Calculation Formula</h3>
+        <span class="tooltip">
+          <span style="display: inline-flex; align-items: center;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style="vertical-align: middle; margin-right: 3px;">
+              <circle cx="10" cy="10" r="9" stroke="#2563eb" stroke-width="2" fill="#fff"/>
+              <rect x="9" y="8" width="2" height="6" rx="1" fill="#2563eb"/>
+              <rect x="9" y="5" width="2" height="2" rx="1" fill="#2563eb"/>
+            </svg>
+            <span style="color:#2563eb;font-weight:500;cursor:pointer;">Info</span>
+          </span>
+          <span class="tooltiptext">
+            Monthly Maintenance calculates automatically every month 1st based on the formula provided below.<br>
+            If you wish to update the formula, please do so <b>before 1st of the month</b>.
+          </span>
+        </span>
+        <label for="maintenanceFormula">Enter formula (use <b>sqft</b> as variable):</label>
+        <input type="text" id="maintenanceFormula" placeholder="e.g. (sqft * 2) + 800" value="(sqft * 2) + 800" />
+        <button class="btn" onclick="saveFormula()">Save Formula</button>
+        <p id="formulaSavedMsg" class="success" style="display:none;">✅ Formula saved!</p>
+      </div>
+      <div class="admin-section">
+        <h3>Distribute Monthly Expense as Dues</h3>
+        <select id="expenseSelect"><option value="">-- Select Expense --</option></select>
+        <div class="actions">
+          <button class="btn" onclick="distributeExpense('equal')">Divide Equally</button>
+          <button class="btn" onclick="distributeExpense('sqft')">Divide by Sqft</button>
+          <button class="btn" onclick="showGroupDivide()">Divide by Group</button>
+        </div>
+        <div id="groupDivideBox" style="display:none; margin-top:10px;">
+          <label>Enter Amount for 999 sqft:</label>
+          <input type="number" id="groupAmt999" placeholder="Amount for 999 sqft"/>
+          <label>Enter Amount for 690 sqft:</label>
+          <input type="number" id="groupAmt690" placeholder="Amount for 690 sqft"/>
+          <label>Enter Amount for 1026 sqft:</label>
+          <input type="number" id="groupAmt1026" placeholder="Amount for 1026 sqft"/>
+          <label>Enter Amount for 918 sqft:</label>
+          <input type="number" id="groupAmt918" placeholder="Amount for 918 sqft"/>
+          <label>Enter Amount for 1098 sqft:</label>
+          <input type="number" id="groupAmt1098" placeholder="Amount for 1098 sqft"/>
+          <label>Enter Amount for 1089 sqft:</label>
+          <input type="number" id="groupAmt1089" placeholder="Amount for 1089 sqft"/>
+          <label>Enter Amount for 1359 sqft:</label>
+          <input type="number" id="groupAmt1359" placeholder="Amount for 1359 sqft"/>
+          <button class="btn" onclick="distributeExpense('group')">Apply Group Dues</button>
+        </div>
+        <p id="expenseDistSuccess" class="success" style="display:none;">✅ Dues added to flats!</p>
+      </div>
+      <div class="admin-section">
+        <h3>Update Flat Size</h3>
+        <div class="admin-form-row">
+          <select id="sizeFlat"><option value="">-- Select Flat --</option></select>
+          <input type="number" id="flatSize" placeholder="Enter Sqft"/>
+        </div>
+        <button class="btn" onclick="updateFlatSize()">Save Size</button>
+      </div>
+      <div class="admin-section">
+        <h3>Add Custom Charge</h3>
+        <div class="admin-form-row">
+          <select id="adminFlat"><option value="">-- Select Flat --</option></select>
+          <input type="text" id="chargeName" placeholder="Charge Description"/>
+          <input type="number" id="chargeAmount" placeholder="Amount (₹)"/>
+        </div>
+        <button class="btn" onclick="addCharge()">Add Charge</button>
+      </div>
+      <div class="admin-section">
+        <h3>Pending Dues</h3>
+        <label>Show: </label>
+        <select id="filterDues" onchange="refreshAdminTables()">
+          <option value="unpaid">Only Unpaid</option>
+          <option value="paid">Only Paid</option>
+          <option value="all">All</option>
+        </select>
+        <div class="table-responsive">
+          <table id="pendingTable">
+            <thead>
+              <tr><th>Flat</th><th>Sqft</th><th>Description</th><th>Amount</th><th>Status / Action</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="admin-section">
+        <h3>Payment History</h3>
+        <div class="table-responsive">
+          <table id="historyTable">
+            <thead>
+              <tr><th>Flat</th><th>Sqft</th><th>Description</th><th>Amount</th><th>Date</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="admin-section">
+        <h3>Change Admin Password</h3>
+        <input type="password" id="newAdminPass" placeholder="Enter New Admin Password"/>
+        <button class="btn" onclick="changeAdminPassword()">Update Admin Password</button>
+      </div>
+      <div class="admin-section">
+        <label style="font-weight:600;">
+          <input type="checkbox" id="enableDeleteToggle" onchange="toggleDeleteButtons()" style="accent-color:#ef4444;"/>
+          Enable Delete Actions
+        </label>
+        <div id="deleteWarning" style="display:none;color:#ef4444;font-weight:600;margin-bottom:10px;">
+          ⚠️ Warning: Deleting data is irreversible. Proceed with caution!
+        </div>
+        <div class="actions">
+          <button class="btn btn-danger" id="deleteDuesBtn" onclick="deleteAllDues()" disabled>Delete All Dues</button>
+          <button class="btn btn-danger" id="deleteExpensesBtn" onclick="deleteAllExpenses()" disabled>Delete All Expenses (This Month)</button>
+          <button class="btn btn-danger" id="deletePaymentsBtn" onclick="deleteAllPayments()" disabled>Delete All Payment History</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -426,9 +589,19 @@ async function saveFormula() {
 }
 
 /* Show login forms */
-function showUserLogin(){ document.getElementById('userLoginCard').style.display='block'; document.getElementById('loginCard').style.display='none'; }
-function showAdminLogin(){ document.getElementById('loginCard').style.display='block'; document.getElementById('userLoginCard').style.display='none'; }
-
+function showUserLogin() {
+  document.getElementById('mainContainer').style.display = 'block';
+  document.getElementById('userLoginCard').style.display = 'block';
+  document.getElementById('loginCard').style.display = 'none';
+}
+function showAdminLogin() {
+  document.getElementById('mainContainer').style.display = 'block';
+  document.getElementById('loginCard').style.display = 'block';
+  document.getElementById('userLoginCard').style.display = 'none';
+}
+// After successful login (user or admin), ensure container is visible
+// Also do this in your session restore logic:
+document.getElementById('mainContainer').style.display = 'block';
 /* User login + password mgmt */
 async function userLogin(){
   const flat=document.getElementById('userFlatSelect').value;
@@ -1004,6 +1177,24 @@ window.onload = function() {
  document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
   });
+
+function toggleDarkMode() {
+  const body = document.body;
+  body.classList.toggle('dark-mode');
+  // Save preference
+  localStorage.setItem('darkMode', body.classList.contains('dark-mode') ? 'on' : 'off');
+  // Update button label
+  document.getElementById('toggleModeBtn').textContent = body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+}
+
+// On page load, restore mode if set
+document.addEventListener("DOMContentLoaded", () => {
+  const saved = localStorage.getItem('darkMode');
+  if(saved === 'on') {
+    document.body.classList.add('dark-mode');
+    document.getElementById('toggleModeBtn').textContent = '☀️ Light Mode';
+  }
+});
 </script>
 <div style="
   position: fixed;
@@ -1016,7 +1207,7 @@ window.onload = function() {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.3
+  v2025.1.0.4
 </div>
 </body>
 </html>
