@@ -309,8 +309,8 @@ body.dark-mode .card {
 body.dark-mode .card input,
 body.dark-mode .card select,
 body.dark-mode .card label,
-body.dark-mode .card .muted,
-body.dark-mode .card .due-title,
+/*body.dark-mode .card .muted,*/
+/*body.dark-mode .card .due-title,*/
 body.dark-mode .card h2,
 body.dark-mode .card h3,
 body.dark-mode .card h4,
@@ -380,21 +380,20 @@ body.dark-mode #residentCard .due-title {
     width: 100%;
   }
 }
+body.dark-mode #residentCard.card {
+  background: var(--card-bg-dark) !important;
+  color: var(--text-dark) !important;
+}
 body.dark-mode #residentCard .due-title {
   color: #38bdf8 !important;    /* Bright blue for pending label */
   background: transparent !important; /* Remove dark background */
   font-weight: bold;
 }
-
 body.dark-mode #residentCard .muted {
   color: #e0e7ff !important;    /* Very light text */
   background: transparent !important;
   font-size: 15px;
   font-weight: 500;
-}
-body.dark-mode #residentCard.card {
-  background: var(--card-bg-dark) !important;
-  color: var(--text-dark) !important;
 }
   </style>
 </head>
@@ -1311,7 +1310,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.9d
+  v2025.1.0.9e
 </div>
 </body>
 </html>
