@@ -413,6 +413,7 @@ body.dark-mode #residentCard .muted {
     <!--<button class="btn btn-danger" id="adminLogoutBtn" style="display:none" onclick="adminLogout()">Logout</button>-->
   </div>
 </header>
+<div id="welcomeMsg" style="display:none;font-weight:600;color:#2563eb;font-size:1.25em;margin:18px 0 8px 0;text-align:center;"></div>
 <div class="login-bar" style="
   display: flex;
   justify-content: center;
@@ -627,6 +628,8 @@ const adminLoggedIn = localStorage.getItem('adminLoggedIn');
     document.getElementById('userLoginBtn').style.display='none';
     document.getElementById('userLogoutBtn').style.display='inline-block';
     document.getElementById('adminLoginBtn').style.display='none';
+    document.getElementById('welcomeMsg').textContent = `Welcome, Flat ${loggedInFlat}!`;
+document.getElementById('welcomeMsg').style.display = 'block';
      await renderResidentDues();
   } else if(adminLoggedIn === 'true'){
     document.getElementById('loginCard').style.display='none';
@@ -696,6 +699,8 @@ function showUserLogin() {
   document.getElementById('mainContainer').style.display = 'block';
   document.getElementById('userLoginCard').style.display = 'block';
   document.getElementById('loginCard').style.display = 'none';
+  document.getElementById('welcomeMsg').textContent = `Welcome, Flat ${flat}!`;
+  document.getElementById('welcomeMsg').style.display = 'block';
 }
 function showAdminLogin() {
   document.getElementById('mainContainer').style.display = 'block';
@@ -730,7 +735,9 @@ async function userLogin(){
 }
 function userLogout(){ loggedInFlat=null; 
 localStorage.removeItem('loggedInFlat'); // Remove session
-document.getElementById('residentCard').style.display='none'; document.getElementById('userLoginBtn').style.display='inline-block'; document.getElementById('userLogoutBtn').style.display='none'; document.getElementById('adminLoginBtn').style.display='inline-block'; }
+document.getElementById('residentCard').style.display='none'; document.getElementById('userLoginBtn').style.display='inline-block'; document.getElementById('userLogoutBtn').style.display='none'; document.getElementById('adminLoginBtn').style.display='inline-block'; 
+  document.getElementById('welcomeMsg').style.display = 'none';
+}
 async function changeUserPassword(){
   const newPass=document.getElementById("newUserPass").value;
   if(!loggedInFlat||!newPass){ alert("Enter new password!"); return; }
@@ -824,8 +831,8 @@ async function renderResidentDues(){
       let actionHtml="";
       if(d.status==="paid"){ actionHtml=`<div class="success">✅ Paid on ${d.paidDate||""}</div>`; }
       else{
-       actionHtml = `<div class="actions">
-  <a class="btn btn-small" href="upi://pay?pa=eleganceenclave@hdfcbank&am=${encodeURIComponent(d.amount)}&cu=INR&tn=${encodeURIComponent(d.desc)}">Pay Now</a>
+      actionHtml = `<div class="actions">
+  <a class="btn btn-small" href="upi://pay?pa=eleganceenclave@hdfcbank&am=${encodeURIComponent(d.amount)}&cu=INR&tn=${encodeURIComponent(d.desc)} (Flat ${loggedInFlat})">Pay Now</a>
   <button class="btn btn-small" onclick="markPaid('${loggedInFlat}','${doc.id}',${d.amount},'${descEsc}')">Mark as Paid</button>
   <div class="muted" style="margin-top:4px;">(Pay Now works on Mobile/Tab with payment apps. Please use such a device.)</div>
 </div>`;
@@ -1310,7 +1317,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.9e
+  v2025.1.0.9f
 </div>
 </body>
 </html>
