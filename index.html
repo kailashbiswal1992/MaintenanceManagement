@@ -280,6 +280,7 @@
   margin-left: 10px;
   font-family: var(--font);
   transition: background 0.3s, color 0.3s;
+  font-weight: bold; 
 }
 body.dark-mode .toggle-mode-btn {
   background: var(--card-bg-dark);
@@ -292,6 +293,34 @@ body.dark-mode .toggle-mode-btn {
   gap: 16px;
   margin: 16px 0 0 0;
 }
+@media (max-width: 600px) {
+  .toggle-mode-btn {
+    font-size: 12px;
+    padding: 6px 16px;
+    min-width: 0;
+    margin-left: 4px;
+  }
+}
+body.dark-mode .card {
+  background: var(--card-bg-dark);
+  color: var(--text-dark);
+}
+
+body.dark-mode .card input,
+body.dark-mode .card select,
+body.dark-mode .card label,
+body.dark-mode .card .muted,
+body.dark-mode .card .due-title,
+body.dark-mode .card h2,
+body.dark-mode .card h3,
+body.dark-mode .card h4,
+body.dark-mode .card table,
+body.dark-mode .card th,
+body.dark-mode .card td {
+  color: var(--text-dark) !important;
+  background: #23304a !important;
+  border-color: #3b82f6 !important;
+}
   </style>
 </head>
 <body>
@@ -303,7 +332,7 @@ body.dark-mode .toggle-mode-btn {
     <span>Apartment Maintenance</span>
   </div>
   <div>
-    <button class="toggle-mode-btn" id="toggleModeBtn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    <button class="toggle-mode-btn" id="toggleModeBtn" onclick="toggleDarkMode()">🌙 Dark</button>
     <!--<button class="btn" id="userLoginBtn" onclick="showUserLogin()">User Login</button>-->
     <!--<button class="btn btn-danger" id="userLogoutBtn" style="display:none" onclick="userLogout()">Logout</button>-->
     <!--<button class="btn" id="adminLoginBtn" onclick="showAdminLogin()">Admin Login</button>-->
@@ -1184,7 +1213,7 @@ function toggleDarkMode() {
   // Save preference
   localStorage.setItem('darkMode', body.classList.contains('dark-mode') ? 'on' : 'off');
   // Update button label
-  document.getElementById('toggleModeBtn').textContent = body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+  document.getElementById('toggleModeBtn').textContent = body.classList.contains('dark-mode') ? '☀️ Light' : '🌙 Dark';
 }
 
 // On page load, restore mode if set
@@ -1207,7 +1236,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.4
+  v2025.1.0.5
 </div>
 </body>
 </html>
