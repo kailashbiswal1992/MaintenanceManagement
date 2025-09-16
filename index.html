@@ -343,6 +343,24 @@ body.dark-mode #residentCard .muted,
 body.dark-mode #residentCard .due-title {
   background: transparent !important;
 }
+   @media (max-width: 600px) {
+  #residentCard .due-item .actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 5px;
+  }
+  #residentCard .due-item .actions .btn,
+  #residentCard .due-item .actions .btn-small {
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+  }
+  #residentCard .due-item .muted {
+    margin-top: 0;
+    text-align: left;
+    width: 100%;
+  }
+} 
   </style>
 </head>
 <body>
@@ -1258,7 +1276,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.8
+  v2025.1.0.9
 </div>
 </body>
 </html>
