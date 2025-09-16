@@ -338,6 +338,11 @@ body.dark-mode #residentCard .success {
   color: #22c55e !important;    /* Green for paid status */
   font-weight: bold;
 }
+    /* Fix background for pending amount and help text in dark mode */
+body.dark-mode #residentCard .muted,
+body.dark-mode #residentCard .due-title {
+  background: transparent !important;
+}
   </style>
 </head>
 <body>
@@ -1253,7 +1258,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.7
+  v2025.1.0.8
 </div>
 </body>
 </html>
