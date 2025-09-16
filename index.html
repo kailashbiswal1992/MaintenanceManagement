@@ -380,6 +380,18 @@ body.dark-mode #residentCard .due-title {
     width: 100%;
   }
 }
+body.dark-mode #residentCard .due-title {
+  color: #38bdf8 !important;    /* Bright blue for pending label */
+  background: transparent !important; /* Remove dark background */
+  font-weight: bold;
+}
+
+body.dark-mode #residentCard .muted {
+  color: #e0e7ff !important;    /* Very light text */
+  background: transparent !important;
+  font-size: 15px;
+  font-weight: 500;
+}
   </style>
 </head>
 <body>
@@ -1295,7 +1307,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.9b
+  v2025.1.0.9c
 </div>
 </body>
 </html>
