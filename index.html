@@ -728,7 +728,8 @@ async function userLogin(){
       document.getElementById('adminLoginBtn').style.display='none';
       document.getElementById('userExpensesBox').innerHTML = '';
       document.getElementById('userExpenseMonth').value = ''; // Optional: also reset dropdown
-   
+      document.getElementById('welcomeMsg').textContent = `Welcome, Flat ${flat}!`;
+      document.getElementById('welcomeMsg').style.display = 'block';
       renderResidentDues();
     } else alert('Invalid Password');
   }catch(err){ console.error(err); alert('Error checking password'); }
@@ -1317,7 +1318,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.9f
+  v2025.1.0.9g
 </div>
 </body>
 </html>
