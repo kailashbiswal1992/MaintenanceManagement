@@ -425,6 +425,19 @@ body.dark-mode #residentCard .muted {
   <button class="btn" id="adminLoginBtn" onclick="showAdminLogin()">Admin Login</button>
   <button class="btn btn-danger" id="adminLogoutBtn" style="display:none" onclick="adminLogout()">Logout</button>
 </div>
+<div class="welcome-box" id="initialWelcomeMsg" style="
+  font-weight:600;
+  color:#2563eb;
+  font-size:1.23em;
+  margin:18px 0 8px 0;
+  text-align:center;
+  background: #e0e7ff;
+  border-radius: 12px;
+  padding: 16px 6px;
+">
+  Welcome to Elegance Enclave Maintenance Management Page.<br>
+  <span style="font-weight:400;color:#444;font-size:1em;">Please login to see the details.</span>
+</div>
 <div class="container" id="mainContainer" style="display:none;">
   <div class="grid">
     <!-- User Login -->
@@ -701,17 +714,20 @@ function showUserLogin() {
   document.getElementById('loginCard').style.display = 'none';
   document.getElementById('welcomeMsg').textContent = `Welcome, Flat ${flat}!`;
   document.getElementById('welcomeMsg').style.display = 'block';
+  document.getElementById('initialWelcomeMsg').style.display = 'none';
 }
 function showAdminLogin() {
   document.getElementById('mainContainer').style.display = 'block';
   document.getElementById('loginCard').style.display = 'block';
   document.getElementById('userLoginCard').style.display = 'none';
+  document.getElementById('initialWelcomeMsg').style.display = 'none';
 }
 // After successful login (user or admin), ensure container is visible
 // Also do this in your session restore logic:
 document.getElementById('mainContainer').style.display = 'block';
 /* User login + password mgmt */
 async function userLogin(){
+  document.getElementById('initialWelcomeMsg').style.display = 'none';
   const flat=document.getElementById('userFlatSelect').value;
   const pass=document.getElementById('userPass').value;
   if(!flat||!pass){ alert('Flat and Password required!'); return; }
@@ -862,6 +878,7 @@ async function markPaid(flat,id,amount,desc){
 
 /* Admin login + password mgmt */
 async function adminLogin(){
+  document.getElementById('initialWelcomeMsg').style.display = 'none';
   const user = document.getElementById('adminUser').value;
   const pass = document.getElementById('adminPass').value;
   if(user !== "admin"){ alert("Invalid Username"); return; }
@@ -1318,7 +1335,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.9g
+  v2025.1.0.9h
 </div>
 </body>
 </html>
