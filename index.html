@@ -711,10 +711,11 @@ async function saveFormula() {
 function showUserLogin() {
   document.getElementById('mainContainer').style.display = 'block';
   document.getElementById('userLoginCard').style.display = 'block';
+  document.getElementById('initialWelcomeMsg').style.display = 'none';
   document.getElementById('loginCard').style.display = 'none';
   document.getElementById('welcomeMsg').textContent = `Welcome, Flat ${flat}!`;
   document.getElementById('welcomeMsg').style.display = 'block';
-  document.getElementById('initialWelcomeMsg').style.display = 'none';
+  
 }
 function showAdminLogin() {
   document.getElementById('mainContainer').style.display = 'block';
@@ -1335,7 +1336,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pointer-events: none;
   font-family: 'Poppins', Arial, sans-serif;
 ">
-  v2025.1.0.9h
+  v2025.1.0.9i
 </div>
 </body>
 </html>
